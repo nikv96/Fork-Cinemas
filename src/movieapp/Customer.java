@@ -9,10 +9,6 @@ package movieapp;
  *
  * @author user
  */
-public class MovieApp {
-
-    public static void main(String[] args) {
-        
-    }
+public class Customer {
     
 }
