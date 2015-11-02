@@ -13,32 +13,39 @@ import java.util.*;
  */
 public class Staff extends Person{
     private String cineplex;
-    private int choice;
     
     Scanner sc = new Scanner(System.in);
-    public boolean login()
+    public void login()
     {
-        System.out.println("Enter username");
+        int ch = 0;
+        boolean flag =false;
+        do{
+            super.login();
+            //flag = checkUsernamePassword();
+            if ( flag == false ){
+                System.out.println("Either username or password is wrong.");
+                System.out.println("1. Sign up 2. Login");
+                ch = sc.nextInt();
+                break;
+            }
+        } while (flag ==true);
         
-        System.out.println("Enter password");
-        
-        return true;
+        if (ch==1)
+            signup();
+        else if (ch==2)
+            login();
     }
     
     public void signup()
     {
-       System.out.println("Enter Name");
-       System.out.println("Enter username");
-       System.out.println("Enter password");
-       System.out.println("Enter email id");
-       System.out.println("Enter age");
-       System.out.println("Enter phone number");
-       System.out.println("Enter postal code");
-       System.out.println("Enter gender");                 
+       super.signup();
+       System.out.println("Enter cineplex name: ");
+       cineplex = sc.next();
     }
     
     public int displayMenu()
     {
+        int choice;
         choice = sc.nextInt();
         System.out.println("Menu:\n1. List All Movies\n2. Search by name\n3. Search by type\n4. Top 5 by rating\n5. Logout\t\t\t\t6. Exit");
         switch(choice)
