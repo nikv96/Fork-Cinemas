@@ -12,7 +12,11 @@ package movieapp;
 public class MovieApp {
 
     public static void main(String[] args) {
-        
+        int i = 0;
+<<<<<<< HEAD
+        int j = 2;
+=======
+>>>>>>> master
     }
     
 }
