@@ -12,7 +12,7 @@ package movieapp;
 public class MovieApp {
 
     public static void main(String[] args) {
-        //comment1
+        int i = 0;
     }
     
 }
