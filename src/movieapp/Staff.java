@@ -43,7 +43,8 @@ public class Staff extends Person{
        cineplex = sc.next();
     }
     
-    public int displayMenu()
+    
+    public void displayMenu()
     {
         int choice;
         choice = sc.nextInt();
@@ -52,11 +53,6 @@ public class Staff extends Person{
         {
             case 1: break;
         }
-        
-        
-        
-        
-        return choice;
  
     }
     
