@@ -31,12 +31,13 @@ public class Customer extends Person {
             login();
     }
     
-    public void signup (){
-        super.signup();
-        //add to dat file
+    public void signup()
+    {
+       super.signup();
+       CustomerDB.add(id, name, username, password, emailID, age, phone, postalCode, sex);
     }
     
-    public int displayMenu()
+    public void displayMenu()
     {
         int choice;
         choice = sc.nextInt();
@@ -45,6 +46,5 @@ public class Customer extends Person {
         {
             case 1: break;
         }
-        return choice;
     }
 }

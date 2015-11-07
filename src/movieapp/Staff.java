@@ -42,7 +42,7 @@ public class Staff extends Person{
        super.signup();
        System.out.println("Enter cineplex name: ");
        cineplex = sc.next();
-       StaffDB.addStaff(name, username, password, emailID, age, phone, postalCode, sex, cineplex); // will replace variable names with
+       StaffDB.addStaff(id, name, username, password, emailID, age, phone, postalCode, sex, cineplex); // will replace variable names with
        //get and set methods
     }
     
@@ -55,8 +55,6 @@ public class Staff extends Person{
         {
             case 1: break;//will complete once MovieMenu is done
         }
-        
-        
  
     }
     
