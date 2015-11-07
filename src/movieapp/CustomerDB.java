@@ -42,11 +42,11 @@ public class CustomerDB {
         return present;
     }
     
-    public void addCustomer(int id, String name, String user, String pwd, String email, int age, long phno, long pcode, char sex) throws IOException, FileNotFoundException, ParseException{
+    public void addCustomer(Customer c) throws IOException, FileNotFoundException, ParseException{
       //basic writing code
       JSONObject obj = new JSONObject();
       JSONParser parser = new JSONParser();
-      String s = "{"+id+":{\"Name\":"+name+",\"Age\":"+age+",\"EmailID\":"+email+",\"Number\":"+phno+",\"Postal Code\":"+pcode+",\"Gender\":"+sex+",\"Username\":"+user+",\"Password\":"+pwd+"}}";
+      String s = "{"+c.id+":{\"Name\":"+c.name+",\"Age\":"+c.age+",\"EmailID\":"+c.email+",\"Number\":"+c.phno+",\"Postal Code\":"+c.pcode+",\"Gender\":"+c.sex+",\"Username\":"+c.user+",\"Password\":"+c.pwd+"}}";
       obj = (JSONObject) parser.parse(s);
       try (FileWriter file = new FileWriter("customerData.txt")) {
 			file.write(obj.toJSONString());

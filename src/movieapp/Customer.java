@@ -9,10 +9,9 @@ package movieapp;
  *
  * @author user
  */
-public class Customer extends Person{
+public class Customer extends Person {
     
-    public void login()
-    {
+    public void login (){
         int ch = 0;
         boolean flag =false;
         do{
@@ -35,7 +34,7 @@ public class Customer extends Person{
     public void signup()
     {
        super.signup();
-       System.out.println("Enter cineplex name: ");
+       CustomerDB.add(id, name, username, password, emailID, age, phone, postalCode, sex);
     }
     
     public void displayMenu()
@@ -47,6 +46,5 @@ public class Customer extends Person{
         {
             case 1: break;
         }
-        
     }
 }
