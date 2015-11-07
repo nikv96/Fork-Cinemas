@@ -11,4 +11,25 @@ package movieapp;
  */
 public class MovieDetails {
     
+    public void getMovieDetails()
+    {
+        //will be added later
+    }
+    
+    public void booking()
+    {
+        //will be added later
+    }
+    
+    public void addReview()
+    {
+        //will be added later
+    }
+    
+    public void checkSeatAvailability()
+    {
+        //will be added later
+    }
+    
+    
 }
