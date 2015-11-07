@@ -10,16 +10,16 @@ package movieapp;
  * @author user
  */
 public class MovieMenu {
-    private int menuChoice;
+    private int menuCChoice;
     
-    public void setMenuChoice(int choice)
+    public void setMenuCChoice(int choice)
     {
-        menuChoice = choice;
+        menuCChoice = choice;
     }
     
-    public void movieListing()
+    public void customerMenu()
     {
-        switch(menuChoice)
+        switch(menuCChoice)
         {
             case 1: //List all
                 break;
