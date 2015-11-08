@@ -18,31 +18,33 @@ public class StaffDB {
     public static boolean readStaff(String user, String pwd) throws IOException, FileNotFoundException, ParseException{
     //returns boolean to check for authentication
         JSONParser parser = new JSONParser();
-        JSONObject obj1 = (JSONObject) parser.parse(new FileReader("staffData.txt"));
-        JSONObject obj2 = new JSONObject();
+        JSONObject objFull = (JSONObject) parser.parse(new FileReader("staffData.txt"));
+        JSONObject objRow = new JSONObject();
         boolean present = false;
         
-        for ( int i = 0; i<obj1.size();i++){
-            obj2 = (JSONObject) obj1.get(i);
-            if (user.equals(obj2.get("Username"))){
-                if (pwd.equals(obj2.get("Password")))
+        for ( int i = 0; i<objFull.size();i++){
+            objRow = (JSONObject) objFull.get(i);
+            if (user.equals(objRow.get("Username")))
+            {
+                if (pwd.equals(objRow.get("Password")))
                     present = true;
             }
         }
-        
+
         return present;
 }
     
-    public static void addStaff(Staff s) throws IOException, FileNotFoundException, ParseException{
+    public JSONObject addStaff(Staff s) throws IOException, FileNotFoundException, ParseException{
       //adds staff record to the .dat file
       //basic writing code
-      JSONObject obj = new JSONObject();
+     JSONObject obj = new JSONObject();
       JSONParser parser = new JSONParser();
-      String s = "{"+s.id+":{\"Name\":"+s.name+",\"Age\":"+s.age+",\"EmailID\":"+s.email+",\"Number\":"+s.phno+",\"Postal Code\":"+s.pcode+",\"Gender\":"+s.sex+",\"Username\":"+s.user+",\"Password\":"+s.pwd+",\"Cineplex\":"+s.cineplex+"}}";
-      obj = (JSONObject) parser.parse(s);
-      try (FileWriter file = new FileWriter("staffData.txt")) {
+      String str = "{"+s.id+":{\"Name\":"+s.name+",\"Age\":"+s.age+",\"EmailID\":"+s.emailID+",\"Number\":"+s.phone+",\"Postal Code\":"+s.postalCode+",\"Gender\":"+s.gender+",\"Username\":"+s.username+",\"Password\":"+s.password+"\"Cineplex\":"+ s.cineplex +"}}";
+      obj = (JSONObject) parser.parse(str);
+      try (FileWriter file = new FileWriter("customerData.txt")) {
 			file.write(obj.toJSONString());
 	}
+      return obj;
        
     }
     
@@ -50,18 +52,18 @@ public class StaffDB {
     //looks for the appropriate username and returns if existing, allowing access to that customer's details
         
         JSONParser parser = new JSONParser();
-        JSONObject obj1 = (JSONObject) parser.parse(new FileReader("customerData.txt"));
-        JSONObject obj2 = new JSONObject();
+        JSONObject objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
+        JSONObject objRow = new JSONObject();
         boolean present = false;
         
-        for ( int i = 0; i<obj1.size();i++){
-            obj2 = (JSONObject) obj1.get(i);
-            if (user.equals(obj2.get("Username"))){
+        for ( int i = 0; i<objFull.size();i++)
+        {
+            objRow = (JSONObject) objFull.get(i);
+            if (user.equals(objRow.get("Username")))
+            {
                     present = true;
             }
         }
-        
-        //do something here
         
         return present;
     

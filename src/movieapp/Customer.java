@@ -5,38 +5,77 @@
  */
 package movieapp;
 
+import java.io.IOException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+
 /**
  *
  * @author user
  */
 public class Customer extends Person {
     
+    static CustomerDB custObj[] = new CustomerDB[10];
+    
+    JSONObject custJSON[] = new JSONObject[10];
+  
+    int id;
+    
+    @Override
     public void login (){
-        int ch = 0;
-        boolean flag =false;
+        try{
+        int ch;
+        boolean flag;
         do{
             super.login();
-            //flag = checkUsernamePassword();
+           flag = CustomerDB.checkUser(username, password);
             if ( flag == false ){
                 System.out.println("Either username or password is wrong.");
                 System.out.println("1. Sign up 2. Login");
                 ch = sc.nextInt();
-                break;
+                if(ch == 1)
+                {
+                    signup();
+                    login();
+                    flag = true;
+                }
+            
             }
-        } while (flag ==true);
+        } while (flag !=true);
+        displayMenu();
+        }
+        catch(IOException | ParseException e)
+        {
+            e.getMessage();
+        }
         
-        if (ch==1)
-            signup();
-        else if (ch==2)
-            login();
+    }
+        
+    
+    @Override
+    public void signup (){
+        super.signup();
+        Customer c = new Customer();
+        c.id++;
+        c.name = name;
+        c.username = username;
+        c.password = password;
+        c.age = age;
+        c.gender = gender;
+        c.emailID = emailID;
+        c.phone = phone;
+        c.postalCode = postalCode;
+        
+        try{
+            custJSON[id] = custObj[id].addCustomer(c);
+        } catch(IOException | ParseException e)
+        {
+            e.getMessage();
+        }
+                
     }
     
-    public void signup()
-    {
-       super.signup();
-       CustomerDB.add(id, name, username, password, emailID, age, phone, postalCode, sex);
-    }
-    
+    @Override
     public void displayMenu()
     {
         int choice;
@@ -44,7 +83,8 @@ public class Customer extends Person {
         System.out.println("Menu:\n1. List All Movies\n2. Search by name\n3. Search by type\n4. Top 5 by rating\n5. Logout\t\t\t\t6. Exit");
         switch(choice)
         {
-            case 1: break;
+            case 1: 
+                break; // cases shall be added as and when the code is implemented
         }
     }
 }

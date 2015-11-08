@@ -19,22 +19,24 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
 /**
  *
  * @author user
  */
 public class CustomerDB {
     
-    public boolean checkUser(String user, String pwd) throws IOException, FileNotFoundException, ParseException{
+    public static boolean checkUser(String user, String pwd) throws IOException, FileNotFoundException, ParseException
+    {
         JSONParser parser = new JSONParser();
-        JSONObject obj1 = (JSONObject) parser.parse(new FileReader("customerData.txt"));
-        JSONObject obj2 = new JSONObject();
+        JSONObject objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
+        JSONObject objRow = new JSONObject();
         boolean present = false;
         
-        for ( int i = 0; i<obj1.size();i++){
-            obj2 = (JSONObject) obj1.get(i);
-            if (user.equals(obj2.get("Username"))){
-                if (pwd.equals(obj2.get("Password")))
+        for ( int i = 0; i<objFull.size();i++){
+            objRow = (JSONObject) objFull.get(i);
+            if (user.equals(objRow.get("Username"))){
+                if (pwd.equals(objRow.get("Password")))
                     present = true;
             }
         }
@@ -42,15 +44,18 @@ public class CustomerDB {
         return present;
     }
     
-    public void addCustomer(Customer c) throws IOException, FileNotFoundException, ParseException{
+    public JSONObject addCustomer(Customer c) throws IOException, FileNotFoundException, ParseException{
       //basic writing code
       JSONObject obj = new JSONObject();
       JSONParser parser = new JSONParser();
-      String s = "{"+c.id+":{\"Name\":"+c.name+",\"Age\":"+c.age+",\"EmailID\":"+c.email+",\"Number\":"+c.phno+",\"Postal Code\":"+c.pcode+",\"Gender\":"+c.sex+",\"Username\":"+c.user+",\"Password\":"+c.pwd+"}}";
+      String s = "{"+c.id+":{\"Name\":"+c.name+",\"Age\":"+c.age+",\"EmailID\":"+c.emailID+",\"Number\":"+c.phone+",\"Postal Code\":"+c.postalCode+",\"Gender\":"+c.gender+",\"Username\":"+c.username+",\"Password\":"+c.password+"}}";
       obj = (JSONObject) parser.parse(s);
-      try (FileWriter file = new FileWriter("customerData.txt")) {
-			file.write(obj.toJSONString());
-	}
+      try (FileWriter file = new FileWriter("customerData.txt"))
+      {
+		file.write(obj.toJSONString());
+        }
+      
+      return obj;
     }
     
     
