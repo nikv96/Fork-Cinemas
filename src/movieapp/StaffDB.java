@@ -6,6 +6,7 @@
 package movieapp;
 
 import java.io.*;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,14 +20,14 @@ public class StaffDB {
     //returns boolean to check for authentication
         JSONParser parser = new JSONParser();
         JSONObject objFull = (JSONObject) parser.parse(new FileReader("staffData.txt"));
-        JSONObject objRow = new JSONObject();
+        JSONArray arrRow;
         boolean present = false;
         
         for ( int i = 0; i<objFull.size();i++){
-            objRow = (JSONObject) objFull.get(i);
-            if (user.equals(objRow.get("Username")))
+            arrRow = (JSONArray) objFull.get(i);
+            if (user.equals(arrRow.get(6)))
             {
-                if (pwd.equals(objRow.get("Password")))
+                if (pwd.equals(arrRow.get(7)))
                     present = true;
             }
         }
@@ -38,12 +39,22 @@ public class StaffDB {
       //adds staff record to the .dat file
       //basic writing code
      JSONObject obj = new JSONObject();
-      JSONParser parser = new JSONParser();
-      String str = "{"+s.id+":{\"Name\":"+s.name+",\"Age\":"+s.age+",\"EmailID\":"+s.emailID+",\"Number\":"+s.phone+",\"Postal Code\":"+s.postalCode+",\"Gender\":"+s.gender+",\"Username\":"+s.username+",\"Password\":"+s.password+"\"Cineplex\":"+ s.cineplex +"}}";
-      obj = (JSONObject) parser.parse(str);
-      try (FileWriter file = new FileWriter("customerData.txt")) {
-			file.write(obj.toJSONString());
-	}
+      JSONArray arr = new JSONArray();
+      arr.add(s.name); //0
+      arr.add(s.age);//1
+      arr.add(s.emailID);//2
+      arr.add(s.phone);//3
+      arr.add(s.postalCode);//4
+      arr.add(s.gender);//5
+      arr.add(s.username);//6
+      arr.add(s.password);//7
+      arr.add(s.cineplex);//8
+      obj.put(s.id,arr);
+      try (FileWriter file = new FileWriter("staffData.txt"))
+      {
+		file.write(obj.toJSONString());
+        }
+      
       return obj;
        
     }
@@ -52,14 +63,14 @@ public class StaffDB {
     //looks for the appropriate username and returns if existing, allowing access to that customer's details
         
         JSONParser parser = new JSONParser();
-        JSONObject objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
-        JSONObject objRow = new JSONObject();
+        JSONObject objFull = (JSONObject) parser.parse(new FileReader("staffData.txt"));
+        JSONArray arrRow;
         boolean present = false;
         
         for ( int i = 0; i<objFull.size();i++)
         {
-            objRow = (JSONObject) objFull.get(i);
-            if (user.equals(objRow.get("Username")))
+            arrRow = (JSONArray) objFull.get(i);
+            if (user.equals(arrRow.get(6)))
             {
                     present = true;
             }

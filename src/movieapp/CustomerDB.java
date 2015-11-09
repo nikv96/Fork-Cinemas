@@ -5,16 +5,11 @@
  */
 package movieapp;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -30,13 +25,13 @@ public class CustomerDB {
     {
         JSONParser parser = new JSONParser();
         JSONObject objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
-        JSONObject objRow = new JSONObject();
+        JSONArray arrRow;
         boolean present = false;
         
         for ( int i = 0; i<objFull.size();i++){
-            objRow = (JSONObject) objFull.get(i);
-            if (user.equals(objRow.get("Username"))){
-                if (pwd.equals(objRow.get("Password")))
+            arrRow = (JSONArray) objFull.get(i);
+            if (user.equals(arrRow.get(6))){
+                if (pwd.equals(arrRow.get(7)))
                     present = true;
             }
         }
@@ -47,9 +42,16 @@ public class CustomerDB {
     public JSONObject addCustomer(Customer c) throws IOException, FileNotFoundException, ParseException{
       //basic writing code
       JSONObject obj = new JSONObject();
-      JSONParser parser = new JSONParser();
-      String s = "{"+c.id+":{\"Name\":"+c.name+",\"Age\":"+c.age+",\"EmailID\":"+c.emailID+",\"Number\":"+c.phone+",\"Postal Code\":"+c.postalCode+",\"Gender\":"+c.gender+",\"Username\":"+c.username+",\"Password\":"+c.password+"}}";
-      obj = (JSONObject) parser.parse(s);
+      JSONArray arr = new JSONArray();
+      arr.add(c.name); //0
+      arr.add(c.age);//1
+      arr.add(c.emailID);//2
+      arr.add(c.phone);//3
+      arr.add(c.postalCode);//4
+      arr.add(c.gender);//5
+      arr.add(c.username);//6
+      arr.add(c.password);//7
+      obj.put(c.id,arr);
       try (FileWriter file = new FileWriter("customerData.txt"))
       {
 		file.write(obj.toJSONString());
