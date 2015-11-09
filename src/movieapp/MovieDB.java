@@ -5,9 +5,11 @@
  */
 package movieapp;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -22,9 +24,28 @@ public class MovieDB {
     
     private String movieName;
     private String movieType;
-    private String shows[][];
+    private String[] showTimings;
+    private boolean[][] seats;
     private float price;
     private int id;
+    
+    public MovieDB(String movieName, String movieType, String[] showTimings, float price){
+        this.movieName = movieName;
+        this.movieType = movieType;
+        this.price = price;
+        this.showTimings = showTimings;
+        for(int i =0;i<40;i++)
+            for(int j=0;j<40;j++)
+                seats[i][j]=false;
+    }
+    
+    public MovieDB(String movieName, String movieType, String[] showTimings,boolean[][] seats, float price){
+        this.movieName = movieName;
+        this.movieType = movieType;
+        this.price = price;
+        this.showTimings = showTimings;
+        this.seats = seats;
+    }
     
     public String getMovieName(){
         return movieName;
@@ -34,8 +55,12 @@ public class MovieDB {
         return movieType;
     }
     
-    public String[][] getShows(){
-        return shows;
+    public String [] getShowTimings(){
+        return showTimings;
+    }
+    
+    public boolean[][] getSeats(){
+        return seats;
     }
     
     public float getPrice(){
@@ -52,7 +77,18 @@ public class MovieDB {
       JSONArray jsonArray = new JSONArray();
       jsonArray.add(movie.movieName);
       jsonArray.add(movie.movieType);
-      jsonArray.add(movie.shows);
+      JSONArray parentJsonArray = new JSONArray();
+        for (boolean[] seat : seats) {
+            JSONArray childJsonArray = new JSONArray();
+            for (int j = 0; j<seats.length; j++) {
+                childJsonArray.add(seat[j]);
+            }
+            parentJsonArray.add(childJsonArray);
+        }
+      jsonArray.add(parentJsonArray);
+      parentJsonArray = new JSONArray();
+      parentJsonArray.addAll(Arrays.asList(showTimings));
+      jsonArray.add(parentJsonArray);
       jsonArray.add(movie.price);
       obj.put(movie.id, jsonArray);
       try (FileWriter file = new FileWriter("movieData.txt")) {
@@ -109,6 +145,17 @@ public class MovieDB {
 	}
     }
     
+    public void getMovieArray (MovieDB movies []) throws FileNotFoundException, IOException, ParseException{
+        JSONParser parser = new JSONParser();
+        int id = 0;
+        JSONObject obj1 = (JSONObject) parser.parse(new FileReader("movieData.txt"));
+        JSONArray arr;
+        while (obj1.get(id)!=null){
+            arr = (JSONArray)obj1.get(id);
+            movies[id] = new MovieDB(arr.get(0).toString(),arr.get(1),arr.get(2),arr.get(3),arr.get(4));
+        }
+    }
+    
     public void updateMovieListings (MovieDB movies[]) throws IOException {
         //write this code
         JSONObject obj = new JSONObject();
@@ -117,13 +164,23 @@ public class MovieDB {
             jsonArray = new JSONArray();
             jsonArray.add(movie.getMovieName());
             jsonArray.add(movie.getMovieType());
-            jsonArray.add(movie.getShows());
+            JSONArray parentJsonArray = new JSONArray();
+            for (boolean[] show : movie.getSeats()) {
+                JSONArray childJsonArray = new JSONArray();
+                for (int j = 0; j<seats.length; j++) {
+                    childJsonArray.add(show[j]);
+                }
+                parentJsonArray.add(childJsonArray);
+            }
+            jsonArray.add(parentJsonArray);
+            parentJsonArray = new JSONArray();
+            parentJsonArray.addAll(Arrays.asList(movie.getShowTimings()));
+            jsonArray.add(parentJsonArray);
             jsonArray.add(movie.getPrice());
             obj.put(movie.id, jsonArray);
         }
         try (FileWriter file = new FileWriter("movieData.txt")) {
                file.write(obj.toJSONString());
 	}
-            
     }
 }
