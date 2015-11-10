@@ -5,6 +5,7 @@
  */
 package movieapp;
 
+import java.io.Console;
 import java.util.Scanner;
 
 /**
@@ -14,6 +15,7 @@ import java.util.Scanner;
 public class MovieDetails {
     
     Scanner sc = new Scanner(System.in);
+    Console c = System.console();
     
     public void getMovieDetails(MovieDB movie){
         int ch = 0;
@@ -42,25 +44,16 @@ public class MovieDetails {
                 System.out.println("\n\nAdd a review? Y/N");
                 choice = sc.next().charAt(0);
                 if (choice == 'Y')
-                    addReview();
+                    addReview(movie);
                 break;
             case 2:
-                int i;
-                boolean[][] seats = movie.getSeats();
-                for (boolean[] seat : seats) {
-                    System.out.print("\n");
-                    for (i =0;i < seat.length;i++){
-                        if(seat[i]==true){
-                            System.out.print("1 ");
-                        } else {
-                            System.out.print("x");
-                        }
-                    }
-                }
+                checkSeatAvailability(movie);
                 System.out.println("\n\nBook a seat? Y/N");
                 choice = sc.next().charAt(0);
-                if (choice == 'Y')
-                    booking();
+                if (choice == 'Y'){
+                    System.out.println("Enter seat number(Row -- Column): ");
+                    booking(movie, sc.nextInt(), sc.nextInt());
+                }
                 break;
             case 3:
             default:
@@ -70,16 +63,34 @@ public class MovieDetails {
         return;
     }
     
-    public void booking(){
-        
+    public void booking(MovieDB movie, int row, int column){
+        System.out.println("Please enter your 16 digit credit card number: ");
+        c.readPassword();
+        System.out.println("Please enter your 3 digit CVV number: ");
+        c.readPassword();
+        movie.setSeat(row, column);
     }
     
-    public void addReview(){
-        //will be added later
+    public void addReview(MovieDB movie){
+        System.out.println("What the fk do you want to say muthafucker?");
+        String review = sc.next();
+        //write code to get customer's username here
+        movie.setReview(review);
     }
     
-    public void checkSeatAvailability(){
-        //will be added later
+    public void checkSeatAvailability(MovieDB movie){
+        int i;
+        boolean[][] seats = movie.getSeats();
+        for (boolean[] seat : seats) {
+            System.out.print("\n");
+            for (i =0;i < seat.length;i++){
+                if(seat[i]==true){
+                    System.out.print("1 ");
+                } else {
+                    System.out.print("x");
+                }
+            }
+        }
     }
     
     
