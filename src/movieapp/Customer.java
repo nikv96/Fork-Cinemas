@@ -86,7 +86,9 @@ public class Customer extends Person {
     {
         int choice;
         choice = sc.nextInt();
-        System.out.println("Menu:\n1. List All Movies\n2. Search by name\n3. Search by type\n4. Top 5 by rating\n5. Logout\t\t\t\t6. Exit");
+        System.out.println("Menu:\n1. List All Movies\n2. Search by name5"
+                + "\n3. Search by type\n4. Top 5 by rating\n"
+                + "5. Logout\t\t\t\t6. Exit");
         switch(choice)
         {
             case 1: 

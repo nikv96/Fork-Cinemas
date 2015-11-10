@@ -18,8 +18,6 @@ public class MovieList {
     
     public void listAllMovies(MovieDB movieList[])
     {
-        //will do later
-        
         movies = movieList;
          
         for (MovieDB movie : movies) {

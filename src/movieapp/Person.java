@@ -14,17 +14,50 @@ import java.util.Scanner;
  * @author user
  */
 public abstract class Person {
+    
     protected String username;
+    
     protected String password;
+    
     protected String name;
+    
     protected int age;
+    
     protected String emailID;
+    
     protected long phone;
+    
     protected long postalCode;
+    
     protected char gender;
+    
     protected char type;
     
     Scanner sc = new Scanner(System.in);
+    
+    public String getUserName(){
+        return username;
+    }
+    
+    public String getPassword(){
+        return password;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public int getAge(){
+        return age;
+    }
+    
+    public String getEmailID(){
+        return emailID;
+    }
+    
+    public long getPhone(){
+        return phone;
+    }
     
     public void login() {
         System.out.println("Username: ");
