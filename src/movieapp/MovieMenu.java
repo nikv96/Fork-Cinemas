@@ -1,47 +1,64 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package movieapp;
+
+import static java.lang.System.exit;
+import java.util.Scanner;
 
 /**
  *
- * @author user
+ * @author Team Fork
  */
 public class MovieMenu {
+    
     private int menuCChoice;
     
-    public void setMenuCChoice(int choice)
-    {
-        menuCChoice = choice;
+    MovieList movieList = new MovieList();
+    
+    Scanner sc = new Scanner (System.in);
+    
+    /*
+    * This method displays a menu for the customer
+    */
+    public void customerMenu(MovieDB[] movies, Customer customer){
+        do {
+            System.out.println("1. List All Movies\n"
+                    + "2. Search Movies by Name\n"
+                    + "3. Search Movies by Type\n"
+                    + "4. List Top 5 Movie\n"
+                    + "5. View Booking History\nEnter your choice");
+            menuCChoice = sc.nextInt();
+            switch(menuCChoice){
+                case 1: //List all
+                    movieList.listAllMovies(movies);
+                    break;
+                case 2: //Search by name
+                    System.out.println("Enter a movie name: ");
+                    movieList.listSearchByName(movies, sc.next());
+                    break;
+                case 3: //Search by something else
+                    System.out.println("Enter a movie type: ");
+                    movieList.listSearchByType(movies, sc.next());
+                    break;
+                case 4: //Top 5
+                    movieList.listTop5(movies);
+                    break;
+                case 5: //View Booking History
+                    movieList.viewBookingHistory(movies, customer);
+                    break;
+                case 6: //Back
+                    break;
+                case 7: //Logout
+                    break;
+                case 8: //Exit
+                    exit(0);
+                    break;
+            }
+        } while (menuCChoice!=6);
     }
     
-    public void customerMenu()
-    {
-        switch(menuCChoice)
-        {
-            case 1: //List all
-                break;
-            case 2: //Search by name
-                break;
-            case 3: //Search by something else
-                break;
-            case 4: //Top 5
-                break;
-            case 5: //View Booking History
-                break;
-            case 6: //Back
-                break;
-            case 7: //Logout
-                break;
-            case 8: //Exit
-                break;
-        }
-    }
-    
-    public void calcPrice(MovieDB movies[])
-    {
+    /*
+    * This method calculates the price for the tickets
+    */
+    public void calcPrice(MovieDB movies[]){
         //will complete later
     }
     

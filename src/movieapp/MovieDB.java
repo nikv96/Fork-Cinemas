@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package movieapp;
 
 import java.io.FileNotFoundException;
@@ -18,7 +13,7 @@ import org.json.simple.parser.ParseException;
 
 /**
  *
- * @author user
+ * @author Team Fork
  */
 public class MovieDB {
     
@@ -95,6 +90,13 @@ public class MovieDB {
     
     public float[] getRating(){
         return rating;
+    }
+    
+    public float getRatingAverage(){
+        float sum =0;
+        for(int i=0;i<rating.length;i++)
+            sum += rating[i];
+        return sum/rating.length;
     }
     
     public void setSeat(int row, int column){

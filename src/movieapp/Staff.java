@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package movieapp;
 
 import java.util.*;
@@ -12,10 +7,9 @@ import org.json.simple.parser.ParseException;
 
 /**
  *
- * @author user
+ * @author Team Fork
  */
-public class Staff extends Person
-{
+public class Staff extends Person{
     protected String cineplex;
     
     static StaffDB staffObj[] = new StaffDB[10];
@@ -28,22 +22,18 @@ public class Staff extends Person
     
     
     @Override
-    public void login()
-    {
+    public void login(){
         try{
         int ch;
         boolean flag;
-        do
-        {
+        do{
             super.login();
             flag = StaffDB.readStaff(username, password);
-            if (flag == false)
-            {
+            if (flag == false){
                 System.out.println("Either username or password is wrong.");
                 System.out.println("1. Sign up 2. Login");
                 ch = sc.nextInt();
-                if(ch == 1)
-                {
+                if(ch == 1){
                     signup();
                     login();
                     flag = true;
@@ -53,15 +43,13 @@ public class Staff extends Person
         } while (flag !=true);
         displayMenu();
         }
-        catch(IOException | ParseException e)
-        {
+        catch(IOException | ParseException e){
             e.getMessage();
         }
     }
     
     @Override
-    public void signup()
-    {
+    public void signup(){
        super.signup();
        System.out.println("Enter cineplex name: ");
        cineplex = sc.next();
@@ -77,37 +65,31 @@ public class Staff extends Person
         s.postalCode = postalCode;
         s.cineplex = cineplex;
        
-       try 
-       {
+       try {
            staffJSON[id] = staffObj[id].addStaff(s);
        }
-       catch(IOException | ParseException e)
-       {
+       catch(IOException | ParseException e){
            e.getMessage();
        }
     }
     
     @Override
-    public void displayMenu()
-    {
+    public void displayMenu(){
         String userConfig;
         int ch; char c; boolean check;
         System.out.println("Enter M for Movies Update OR U for User Account Update:");
         c = sc.next().charAt(0);
-        if(c == 'U')
-        {
+        if(c == 'U'){
             userEdits();
         }
-        else if(c == 'M')
-        {
+        else if(c == 'M'){
            movieEdits();
         }
   
  
     }
     
-    public void userEdits()
-    {
+    public void userEdits(){
         //will be updated as the get & set methods are completed
         String userConfig;
         int ch; char c; boolean check;
@@ -118,29 +100,23 @@ public class Staff extends Person
         c = sc.next().charAt(0);
         check = c == 'S'? StaffDB.configUser(userConfig):CustomerDB.configUser(userConfig);
         
-        if(check)
-        {
+        if(check){
             System.out.println("Menu:\n1. Change username\n2. Change password\n3. Change name\n4. Change email ID\n5. Logout\t\t\t\t6. Exit");
            ch = sc.nextInt();
-           switch(ch)
-           {
+           switch(ch){
                case 1:
                    break;//cases shall be added as the code is completed
                    
            }
         }
         }
-        catch(IOException | ParseException e)
-        {
+        catch(IOException | ParseException e){
             e.getMessage();
         }
     }
     
-    public void movieEdits()
-    {
+    public void movieEdits(){
         //to be completed
     }
-    
-  
     
 }
