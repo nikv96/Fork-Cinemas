@@ -33,10 +33,12 @@ public class Staff extends Person
         try{
         int ch;
         boolean flag;
-        do{
+        do
+        {
             super.login();
             flag = StaffDB.readStaff(username, password);
-            if ( flag == false ){
+            if (flag == false)
+            {
                 System.out.println("Either username or password is wrong.");
                 System.out.println("1. Sign up 2. Login");
                 ch = sc.nextInt();
@@ -89,11 +91,34 @@ public class Staff extends Person
     public void displayMenu()
     {
         String userConfig;
-        int ch;
+        int ch; char c; boolean check;
+        System.out.println("Enter M for Movies Update OR U for User Account Update:");
+        c = sc.next().charAt(0);
+        if(c == 'U')
+        {
+            userEdits();
+        }
+        else if(c == 'M')
+        {
+           movieEdits();
+        }
+  
+ 
+    }
+    
+    public void userEdits()
+    {
+        //will be updated as the get & set methods are completed
+        String userConfig;
+        int ch; char c; boolean check;
+        try{
         System.out.println("Enter username of account to configure:");
         userConfig = sc.next();
-        try{
-        if(StaffDB.configUser(userConfig))
+        System.out.println("Enter type of account to configure(S for Staff OR C for Customer:");
+        c = sc.next().charAt(0);
+        check = c == 'S'? StaffDB.configUser(userConfig):CustomerDB.configUser(userConfig);
+        
+        if(check)
         {
             System.out.println("Menu:\n1. Change username\n2. Change password\n3. Change name\n4. Change email ID\n5. Logout\t\t\t\t6. Exit");
            ch = sc.nextInt();
@@ -109,7 +134,11 @@ public class Staff extends Person
         {
             e.getMessage();
         }
- 
+    }
+    
+    public void movieEdits()
+    {
+        //to be completed
     }
     
   

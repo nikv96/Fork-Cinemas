@@ -17,9 +17,13 @@ public class Customer extends Person {
     
     static CustomerDB custObj[] = new CustomerDB[10];
     
-    JSONObject custJSON[] = new JSONObject[10];
+    static JSONObject custJSON[] = new JSONObject[10];
   
-    int id;
+    static int id = 0;
+    
+    protected int booked[] = new int[10];
+    
+    private Customer cObject[] = new Customer[10];
     
     @Override
     public void login (){
@@ -65,8 +69,10 @@ public class Customer extends Person {
         c.emailID = emailID;
         c.phone = phone;
         c.postalCode = postalCode;
+        c.booked = new int[]{0,0,0,0,0,0,0,0,0,0};
         
         try{
+            cObject[id] = c;
             custJSON[id] = custObj[id].addCustomer(c);
         } catch(IOException | ParseException e)
         {
@@ -86,5 +92,10 @@ public class Customer extends Person {
             case 1: 
                 break; // cases shall be added as and when the code is implemented
         }
+    }
+    
+    public int[] getBookingHistory(Customer cObject)
+    {
+        return cObject.booked;
     }
 }

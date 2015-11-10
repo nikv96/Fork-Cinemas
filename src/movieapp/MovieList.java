@@ -5,40 +5,67 @@
  */
 package movieapp;
 
+import java.util.*;
+
 /**
  *
  * @author user
  */
 public class MovieList {
-    private MovieDB movies[];
-    private int movieChoice;
+    protected MovieDB movies[];
     
-    public void setMovies(MovieDB movieList[])
+    protected CustomerDB cust[];
+    
+    public void listAllMovies(MovieDB movieList[])
     {
+        //will do later
+        
         movies = movieList;
+         
+        for (MovieDB movie : movies) {
+            System.out.format("%16s%16s%16s%16s", movie.getMovieName(), movie.getMovieType(), Arrays.toString(movie.getShowTimings()), movie.getPrice());
+        }
     }
     
-    public void listAllMovies()
+    public void listSearchByName(MovieDB movieList[], String searchName)
     {
-        //will do later
+        int count = 1;
+        for (MovieDB movie : movieList) {
+            if (movie.getMovieName().toLowerCase().contains(searchName.toLowerCase())) {
+                movies[count - 1] = movie; 
+                System.out.format("%16s%16s%16s%16s%16s", count++, movie.getMovieName(), movie.getMovieType(), Arrays.toString(movie.getShowTimings()), movie.getPrice());
+            }
+        }
     }
     
-    public void listSearchByName()
+    public void listSearchByType(MovieDB movieList[], String searchType)
     {
-        //will do later
+        
+        int count = 1;
+        for (MovieDB movie : movieList) {
+            if (movie.getMovieName().toLowerCase().contains(searchType.toLowerCase())) {
+                movies[count - 1] = movie;
+                System.out.format("%16s%16s%16s%16s%16s", count++, movie.getMovieName(), movie.getMovieType(), Arrays.toString(movie.getShowTimings()), movie.getPrice());
+            }
+        }
     }
     
-    public void listSearchByType()
-    {
-        //will do later
-    }
     public void listTop5()
     {
-      //will do later  
-    }
-    public void viewBookingHistory()
-    {
         //will do later
+    }
+    
+    public void viewBookingHistory(MovieDB movieList[], Customer cObject)
+    {
+        int count = 1;
+        int bookHistory[] = new int[10];
+        bookHistory = cObject.getBookingHistory(cObject);
+        for (int i = 0; i < movieList.length;i++) {
+            if (bookHistory[i] == 1) {
+                movies[count - 1] = movieList[i];
+                System.out.format("%16s%16s%16s%16s%16s", count++, movieList[i].getMovieName(), movieList[i].getMovieType(), Arrays.toString(movieList[i].getShowTimings()), movieList[i].getPrice());
+            }
+        }
     }
     
     

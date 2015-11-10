@@ -51,6 +51,7 @@ public class CustomerDB {
       arr.add(c.gender);//5
       arr.add(c.username);//6
       arr.add(c.password);//7
+      arr.add(c.booked);//8
       obj.put(c.id,arr);
       try (FileWriter file = new FileWriter("customerData.txt"))
       {
@@ -60,5 +61,25 @@ public class CustomerDB {
       return obj;
     }
     
+    public static boolean configUser(String user) throws IOException, FileNotFoundException, ParseException{
+    //looks for the appropriate username and returns if existing, allowing access to that customer's details
+        
+        JSONParser parser = new JSONParser();
+        JSONObject objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
+        JSONArray arrRow;
+        boolean present = false;
+        
+        for ( int i = 0; i<objFull.size();i++)
+        {
+            arrRow = (JSONArray) objFull.get(i);
+            if (user.equals(arrRow.get(6)))
+            {
+                    present = true;
+            }
+        }
+        
+        return present;
+    
+    }
     
 }
