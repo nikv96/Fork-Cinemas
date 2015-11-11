@@ -25,11 +25,11 @@ public class MovieDB {
     
     private boolean[][] seats;
     
-    private float price;
+    private double price;
     
     private String[] reviews;
     
-    private float[] rating;
+    private double[] rating;
             
     private int id;
     
@@ -37,20 +37,21 @@ public class MovieDB {
     }
     
     public MovieDB(String movieName, String movieType, String[] showTimings,
-            float price, String[] reviews, float[] rating){
+            double price, String[] reviews, double[] rating){
         this.movieName = movieName;
         this.movieType = movieType;
         this.price = price;
         this.showTimings = showTimings;
+        this.seats = new boolean[10][40];
         for(int i =0;i<10;i++)
             for(int j=0;j<40;j++)
-                seats[i][j]=false;
+                this.seats[i][j]=false;
         this.reviews = reviews;
         this.rating = rating;
     }
     
     public MovieDB(String movieName, String movieType, String[] showTimings,
-            boolean[][] seats, float price,String[] reviews, float[] rating){
+            boolean[][] seats, double price,String[] reviews, double[] rating){
         this.movieName = movieName;
         this.movieType = movieType;
         this.price = price;
@@ -61,7 +62,7 @@ public class MovieDB {
     }
     
     public String getMovieName(){
-        return movieName;
+        return this.movieName;
     }
     
     public String getMovieType(){
@@ -76,7 +77,7 @@ public class MovieDB {
         return seats;
     }
     
-    public float getPrice(){
+    public double getPrice(){
         return price;
     }
     
@@ -88,12 +89,12 @@ public class MovieDB {
         return reviews;
     }
     
-    public float[] getRating(){
+    public double[] getRating(){
         return rating;
     }
     
-    public float getRatingAverage(){
-        float sum =0;
+    public double getRatingAverage(){
+        double sum =0;
         for(int i=0;i<rating.length;i++)
             sum += rating[i];
         return sum/rating.length;
@@ -107,7 +108,7 @@ public class MovieDB {
         reviews[reviews.length] = new String(review);
     }
     
-    public void setRating(float rating) {
+    public void setRating(double rating) {
         this.rating[this.rating.length] = rating;
     }
     
@@ -141,7 +142,8 @@ public class MovieDB {
       parentJsonArray.addAll(Arrays.asList(movie.rating));
       jsonArray.add(parentJsonArray);
       obj.put(movie.id, jsonArray);
-      try (FileWriter file = new FileWriter("movieData.txt")) {
+      try (FileWriter file = new FileWriter("movieData.txt")) 
+      {
                file.write(obj.toJSONString());
 	}
     }
@@ -209,7 +211,7 @@ public class MovieDB {
         JSONObject obj1 = (JSONObject) parser.parse(new FileReader("movieData.txt"));
         JSONArray arr,arr2,arr3;
         String[] s,s1;
-        float[] s2;
+        double[] s2;
         int i,j;
         boolean[][] seats=null;
         while (obj1.get(id)!=null){
@@ -243,15 +245,15 @@ public class MovieDB {
             //Ratings
             arr2 = new JSONArray();
             arr2 = (JSONArray)arr.get(5);
-            s2 = new float[arr2.size()];
+            s2 = new double[arr2.size()];
             for(i=0;i<arr2.size();i++)
-                s2[i] = (float) arr2.get(i);
+                s2[i] = (double) arr2.get(i);
             
             movies[id] = new MovieDB(((JSONObject)arr.get(0)).toString(),
                     ((JSONObject)arr.get(1)).toString(),
                     s,
                     seats,
-                    (float)arr.get(4),
+                    (double)arr.get(4),
                     s1,
                     s2);
         }
