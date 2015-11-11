@@ -1,5 +1,6 @@
 package movieapp;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -31,7 +32,7 @@ public class MovieDB {
     
     private double[] rating;
             
-    private int id;
+    private static int id = 1;
     
     public MovieDB(){
     }
@@ -93,7 +94,8 @@ public class MovieDB {
         return rating;
     }
     
-    public double getRatingAverage(){
+    public double getRatingAverage()
+    {
         double sum =0;
         for(int i=0;i<rating.length;i++)
             sum += rating[i];
@@ -118,7 +120,11 @@ public class MovieDB {
     
     public void createMovie (MovieDB movie) throws IOException, ParseException{
       JSONParser parser = new JSONParser();
-      JSONObject obj = (JSONObject) parser.parse(new FileReader("movieData.txt"));
+      JSONObject obj = new JSONObject();
+      File f = new File("movieData.txt");
+      if(f.exists()) { 
+          obj = (JSONObject) parser.parse(new FileReader("movieData.txt"));
+      }
       JSONArray jsonArray = new JSONArray();
       jsonArray.add(movie.movieName);
       jsonArray.add(movie.movieType);
@@ -139,15 +145,15 @@ public class MovieDB {
       parentJsonArray.addAll(Arrays.asList(movie.reviews));
       jsonArray.add(parentJsonArray);
       parentJsonArray = new JSONArray();
-      parentJsonArray.addAll(Arrays.asList(movie.rating));
+      for(int i=0; i<rating.length; i++)
+          parentJsonArray.add(rating[i]);
       jsonArray.add(parentJsonArray);
-      obj.put(movie.id, jsonArray);
+      obj.put(movie.id++, jsonArray);
       try (FileWriter file = new FileWriter("movieData.txt")) 
       {
                file.write(obj.toJSONString());
 	}
     }
-    
     /*
     * This method deletes a particular movie from the JSON file
     */
@@ -287,10 +293,11 @@ public class MovieDB {
             parentJsonArray.addAll(Arrays.asList(movie.reviews));
             jsonArray.add(parentJsonArray);
             parentJsonArray = new JSONArray();
-            parentJsonArray.addAll(Arrays.asList(movie.rating));
+            for(int i=0; i<rating.length; i++)
+          parentJsonArray.add(rating[i]);
             jsonArray.add(parentJsonArray);
             jsonArray.add(movie.getPrice());
-            obj.put(movie.id, jsonArray);
+            obj.put(movie.id++, jsonArray);
         }
         try (FileWriter file = new FileWriter("movieData.txt")) {
                file.write(obj.toJSONString());

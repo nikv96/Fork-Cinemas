@@ -17,18 +17,18 @@ public class MovieApp {
         //String movieName, String movieType, String[] showTimings,
            // double price, String[] reviews, double[] rating
         
-        System.out.println("Movie name is");
-       try{
-           
-        PrintWriter writer = new PrintWriter("movieData.txt", "UTF-8");
         
+      
         String[] showTimings = {"Wednesday 3:00 pm", "Wednesday 5:30 pm"};
         String[] reviews = {"@nikv96", "Huge Fan"};
         double[] rating = {4.5, 2.5, 3.5};
         MovieDB movieInit = new MovieDB("Madagascar", "Comedy", showTimings, 12.0, reviews, rating);
         
-        
+        try{
+           
             movieInit.createMovie(movieInit);
+            
+            System.out.println("Movie name is" + movieInit.getMovieName());
         
         }
         catch(IOException | ParseException e)
