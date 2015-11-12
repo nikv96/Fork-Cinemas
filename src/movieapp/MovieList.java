@@ -16,7 +16,7 @@ public class MovieList {
     protected MovieDetails movieChoice = new MovieDetails();
     
     /*
-    * This method lists all the the movies in a tablee
+    * This method lists all the the movies in a table
     */
     public void listAllMovies(MovieDB movieList[], Customer cObj){
         movies = movieList;
@@ -24,7 +24,7 @@ public class MovieList {
         int ch;
          
         for (MovieDB movie : movies) {
-            System.out.format("%16s%16s", movie.getMovieName(), movie.getMovieType());
+            System.out.format("%16s%16s \n", movie.getMovieName(), movie.getMovieType());
         }
         System.out.println("Choose your movie:");
         ch = sc.nextInt();
@@ -92,12 +92,13 @@ public class MovieList {
     */
     public void viewBookingHistory(MovieDB movieList[], Customer cObject){
         int count = 1;
-        boolean bookHistory[];
+        int bookHistory[];
         bookHistory = cObject.getBookingHistory(cObject);
         for (int i = 0; i < movieList.length;i++) {
-            if (bookHistory[i] == true) {
+            if (bookHistory[i] > 0) {
                 movies[count - 1] = movieList[i];
-                System.out.format("%16s%16s%16s%16s%16s", count++, movieList[i].getMovieName(), movieList[i].getMovieType(), Arrays.toString(movieList[i].getShowTimings()), movieList[i].getPrice());
+                System.out.format("%16s%16s%16s%16s%16s", count++, movieList[i].getMovieName(), 
+                        movieList[i].getMovieType(), Arrays.toString(movieList[i].getShowTimings()), movieList[i].getPrice());
             }
         }
     }

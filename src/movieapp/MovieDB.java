@@ -38,18 +38,10 @@ public class MovieDB {
     
     protected MovieDB allMovies[];
     
-    /*
-    * Default constructor
-    */
-    
     public MovieDB(){
     }
     
-    /*
-    * Constructor to initialize the movie name, type and show timings
-    */
-    
-    public MovieDB(String movieName, String movieType, String[] showTimings){
+    public MovieDB(String movieName, String movieType, String[] showTimings, String[] review, double[] rating){
         this.movieName = movieName;
         this.movieType = movieType;
         this.showTimings = showTimings;
@@ -59,14 +51,11 @@ public class MovieDB {
             for(int j=0;j<40;j++)
                 for(int k=0;k<10;k++)
                     this.seats[i][j][k]=false;
-        this.reviews = null;
-        this.rating = null;
+        this.reviews = review;
+        this.rating = rating;
+       
         
     }
-    
-    /*
-    * Constructor to initialize all attributes except seat of movie
-    */
     public MovieDB(String movieName, String movieType, String[] showTimings,
             double price, String[] reviews, double[] rating){
         this.movieName = movieName;
@@ -82,10 +71,6 @@ public class MovieDB {
         this.rating = rating;
     }
     
-    /*
-    * Constructor to initialize all attributes
-    */
-    
     public MovieDB(String movieName, String movieType, String[] showTimings,
             boolean[][][] seats, double price,String[] reviews, double[] rating){
         this.movieName = movieName;
@@ -96,8 +81,6 @@ public class MovieDB {
         this.reviews = reviews;
         this.rating = rating;
     }
-    
-    //getter and setter methods
     
     public int getTotalId(){
         return total_id;
@@ -159,10 +142,17 @@ public class MovieDB {
         this.rating[this.rating.length] = rating;
     }
     
+    public static void setTotalId() throws FileNotFoundException, IOException, ParseException {
+        JSONParser parser = new JSONParser();
+        JSONObject obj1 = (JSONObject) parser.parse(new FileReader("movieData.txt"));
+        total_id = obj1.size();
+    }
+    
     /*
     * This method adds a new movie to the JSON file
     */
     
+    @SuppressWarnings("empty-statement")
     public void createMovie (MovieDB movie) throws IOException, ParseException{
       JSONParser parser = new JSONParser();
       JSONObject obj = new JSONObject();
@@ -189,9 +179,16 @@ public class MovieDB {
         }
       jsonArray.add(parentJsonArray);
       jsonArray.add(movie.price);
+      if(movie.reviews != null)
+      {
       parentJsonArray = new JSONArray();
       parentJsonArray.addAll(Arrays.asList(movie.reviews));
       jsonArray.add(parentJsonArray);
+      }
+      else
+      {
+          movie.setReview("");
+      }
       parentJsonArray = new JSONArray();
       for(int i=0; i<rating.length; i++)
           parentJsonArray.add(rating[i]);
@@ -210,15 +207,18 @@ public class MovieDB {
         int i = 0;
       JSONParser parser = new JSONParser();
       JSONObject obj1 = (JSONObject) parser.parse(new FileReader("movieData.txt"));
-      while (obj1.get(i)!=null){
-          if (movieName == ((JSONArray)obj1.get(i)).get(0)){
-              obj1.remove(i);
+      while (obj1.get(Integer.toString(i))!=null){
+          if(movieName.equals( ((JSONArray)obj1.get(Integer.toString(i))).get(0).toString() ))
+          {
+              obj1.remove(Integer.toString(i));
+              total_id--;
           }
           i++;
       }
-      try (FileWriter file = new FileWriter("movieData.txt")) {
-            file.write(obj1.toJSONString());
-        }
+      
+      MovieDB[] movies = new MovieDB[total_id+1];
+      movies = this.getMovieArray(movies);
+      this.updateMovieListings(movies);
     }
     
     /*
@@ -229,7 +229,7 @@ public class MovieDB {
       JSONParser parser = new JSONParser();
       Scanner sc = new Scanner (System.in);
       JSONObject obj = (JSONObject) parser.parse(new FileReader("movieData.txt"));
-      JSONArray arr = (JSONArray) obj.get(id);
+      JSONArray arr = (JSONArray) obj.get(Integer.toString(id));
       arr.remove(edit - 1);
       switch (edit){
           /* 1. Movie Name
@@ -252,6 +252,7 @@ public class MovieDB {
           default:
               break;
       }
+      obj.put(id,arr);
       try (FileWriter file = new FileWriter("movieData.txt")) {
 		file.write(obj.toJSONString());
 	}
@@ -263,9 +264,9 @@ public class MovieDB {
     
     public MovieDB[] getMovieArray (MovieDB movies []) throws FileNotFoundException, IOException, ParseException{
         JSONParser parser = new JSONParser();
-        int id = 0;
         JSONObject obj1 = (JSONObject) parser.parse(new FileReader("movieData.txt"));
         JSONArray arr,arr2,arr3,arr4;
+        int id=0;
         String[] s,s1;
         double[] s2;
         int i,j,k;
@@ -327,6 +328,7 @@ public class MovieDB {
     
     public void updateMovieListings (MovieDB movies[]) throws IOException {
         //write this code
+        int id=0;
         JSONObject obj = new JSONObject();
         JSONArray jsonArray;
         for (MovieDB movie : movies) {
@@ -352,31 +354,14 @@ public class MovieDB {
             parentJsonArray.addAll(Arrays.asList(movie.reviews));
             jsonArray.add(parentJsonArray);
             parentJsonArray = new JSONArray();
-            for(int i=0; i<rating.length; i++)
-          parentJsonArray.add(rating[i]);
+            for(int i=0; i<movie.rating.length; i++)
+                parentJsonArray.add(movie.rating[i]);
             jsonArray.add(parentJsonArray);
             jsonArray.add(movie.getPrice());
-            obj.put(movie.id++, jsonArray);
+            obj.put(id++, jsonArray);
         }
         try (FileWriter file = new FileWriter("movieData.txt")) {
                file.write(obj.toJSONString());
 	}
-    }
-    
-    public double calcPrice(String cineType, Customer cObj){
-        double finalPrice = 0.0;
-        finalPrice = this.getPrice();
-        
-        if(cObj.getAge() >= 60)
-        {
-            finalPrice = finalPrice * 0.94;
-        }
-        if(this.getMovieType().equals("3D"))
-        {
-            finalPrice = finalPrice * 1.05;
-        }
-        if(cineType.equals("Platinum"))
-            return finalPrice*1.10;
-        return finalPrice;
     }
 }

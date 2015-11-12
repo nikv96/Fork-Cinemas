@@ -21,22 +21,14 @@ public class Customer extends Person {
     
     protected int id;
     
-    protected boolean booked[];
+    protected int booked[];
     
     private Customer cObject[] = new Customer[10];
     
-    /*
-    * This is a default constructor
-    */
-    
     public Customer(){
     }
-    
-    /*
-    * This constructor is to initialize all values of Customer
-    */
 
-    public Customer(String name, int age, String emailid, long phno, long postal, String gender, String user, String pass, boolean[] book) {
+    public Customer(String name, int age, String emailid, long phno, long postal, String gender, String user, String pass, int[] book) {
         this.name = name;
         this.age = age;
         this.emailID = emailid;
@@ -47,10 +39,6 @@ public class Customer extends Person {
         this.password = pass;
         this.booked = book;
     }
-    
-    /*
-    * This method logs in the customer
-    */
     
     @Override
     public void login (){
@@ -81,10 +69,7 @@ public class Customer extends Person {
         }
         
     }
-    
-    /*
-    * This method signs up the customer
-    */
+        
     
     @Override
     public void signup (){
@@ -99,7 +84,7 @@ public class Customer extends Person {
         c.emailID = emailID;
         c.phone = phone;
         c.postalCode = postalCode;
-        c.booked = new boolean[]{false,false,false,false,false,false,false,false};
+        c.booked = new int[]{0,0,0,0,0,0,0,0,0,0,0,0};
         
         try{
             cObject[total_id] = c;
@@ -110,10 +95,6 @@ public class Customer extends Person {
         }
                 
     }
-    
-    /*
-    * This method displays meny for customer
-    */
     
     @Override
     public void displayMenu() throws IOException, FileNotFoundException
@@ -135,12 +116,9 @@ public class Customer extends Person {
         }
         
     }
+
     
-    /*
-    * This method displays booking history for customer
-    */
-    
-    public boolean[] getBookingHistory(Customer cObject)
+    public int[] getBookingHistory(Customer cObject)
     {
         return cObject.booked;
     }

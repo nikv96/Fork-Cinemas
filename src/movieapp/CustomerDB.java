@@ -17,7 +17,6 @@ import org.json.simple.parser.ParseException;
  */
 public class CustomerDB {
     
-    //Getter and Setter methods
     public String getName(Customer c)
     {
         return c.name;
@@ -48,9 +47,11 @@ public class CustomerDB {
         c.emailID = email;
     }
     
-    public void setBooking(Customer c, int id)
+    public void setBooking(Customer c, int id, String slot)
     {
-        c.booked[id] = true;
+        c.booked[id] = (int)(slot.charAt(0)) + 1;
+        System.out.println(""+c.booked[id]);
+        //write back to file later
     }
     
     public void setAge(Customer c, int age)
@@ -58,9 +59,6 @@ public class CustomerDB {
         c.age = age;
     }
     
-    /*
-    * This method checks username and password against the one in the database
-    */
     
     public static boolean checkUser(String user, String pwd) throws IOException, ParseException
     {
@@ -82,10 +80,6 @@ public class CustomerDB {
         }
         return present;
     }
-    
-    /*
-    * This method adds a new customer to the database
-    */
     
     public static JSONObject addCustomer(Customer c) throws IOException, FileNotFoundException, ParseException{
       //basic writing code
@@ -113,10 +107,6 @@ public class CustomerDB {
       return obj;
     }
     
-    /*
-    * This method helps modify customer data
-    */
-    
     public static int configUser(String user) throws IOException, FileNotFoundException, ParseException{
     //looks for the appropriate username and returns if existing, allowing access to that customer's details
         
@@ -131,7 +121,7 @@ public class CustomerDB {
         
         for ( int i = 0; i<objFull.size();i++)
         {
-            arrRow = (JSONArray) objFull.get(i);
+            arrRow = (JSONArray) objFull.get(Integer.toString(i));
             if (user.equals(arrRow.get(6)))
             {
                     present = true;
@@ -152,16 +142,16 @@ public class CustomerDB {
         int id = 0;
         JSONObject obj1 = (JSONObject) parser.parse(new FileReader("customerData.txt"));
         JSONArray arr,childArray;
-        boolean book[];
+        int book[];
         while (obj1.get(Integer.toString(id))!=null){
             arr = (JSONArray) obj1.get(Integer.toString(id));
             
             //booked
             childArray = new JSONArray();
             childArray = (JSONArray)arr.get(8);
-            book = new boolean[childArray.size()];
+            book = new int[childArray.size()];
             for(int i=0;i<childArray.size();i++)
-                book[i] = (boolean) childArray.get(i);
+                book[i] = java.lang.Math.toIntExact((long)childArray.get(i));
             customer[id] = new Customer((arr.get(0)).toString(),
                     java.lang.Math.toIntExact((long) arr.get(1)),
                     arr.get(2).toString(),

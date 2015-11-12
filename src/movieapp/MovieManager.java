@@ -24,7 +24,7 @@ public class MovieManager {
         {
             case 1: //Update Movie Listing
                 break;
-            case 2: //Create Moviee
+            case 2: //Create Movie
                 break;
             case 3: //Update Movie
                 break;

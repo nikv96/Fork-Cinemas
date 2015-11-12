@@ -11,7 +11,6 @@ import org.json.simple.parser.ParseException;
  * @author Team Fork
  */
 public class StaffDB {
-    //inj
     
     public String getName(Staff s)
     {

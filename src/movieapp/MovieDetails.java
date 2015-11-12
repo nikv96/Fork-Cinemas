@@ -1,6 +1,7 @@
 package movieapp;
 
 import java.io.Console;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -14,23 +15,30 @@ public class MovieDetails {
     
     CustomerDB cust = new CustomerDB();
     
-    /*
-    * This method gets the movie details
-    */
-    
     public void getMovieDetails(MovieDB movie, Customer cObj)
     {
-        int ch = 0; 
-        char choice;
+        int ch = 0; double finalPrice = 0.0;
+        char choice; String slot = "";
         System.out.println(movie.getMovieName());
         System.out.println("Movie Type: " + movie.getMovieType());
         System.out.println("Show Timings: ");
         for (String showTiming : movie.getShowTimings()) {
             System.out.print(showTiming + "\t");
         }
+        finalPrice = movie.getPrice();
+        
+        if(cObj.getAge() >= 60)
+        {
+            finalPrice = finalPrice * 0.94;
+        }
+        if(movie.getMovieType().equals("3D"))
+        {
+            finalPrice = finalPrice * 1.05;
+        }
+        
             
-        System.out.println("Deluxe Price: " + movie.calcPrice("Deluxe",cObj));
-        System.out.println("Platinum Price: " + movie.calcPrice("Platinum", cObj));
+        System.out.println("Deluxe Price: " + finalPrice);
+        System.out.println("Platinum Price: " + finalPrice*1.10);
         float sum = 0;
         for (int i=0;i<movie.getRating().length;i++) {
             sum += movie.getRating()[i];
@@ -53,12 +61,14 @@ public class MovieDetails {
                 break;
             case 2:
                 System.out.println("Which slot do you want to go for?");
+                System.out.println(Arrays.toString(movie.getShowTimings()).substring(0,1) + ". " + Arrays.toString(movie.getShowTimings()).substring(2) + "\n");
                 int id;
                 id = sc.nextInt();
                 checkSeatAvailability(movie, id);
                 System.out.println("\n\nBook a seat? Y/N");
                 choice = sc.next().charAt(0);
                 if (choice == 'Y'){
+                   
                     System.out.println("Enter seat number(Row -- Column): ");
                     booking(movie, sc.nextInt(), sc.nextInt(), id, cObj);
                 }
@@ -70,34 +80,24 @@ public class MovieDetails {
         }while ( ch!=3 );
     }
     
-    /*
-    * This method books the seat
-    */
-    
     public void booking(MovieDB movie, int row, int column, int id, Customer cObject)
     {
         System.out.println("Please enter your 16 digit credit card number: ");
-        sc.nextLine();
+        sc.next();
         System.out.println("Please enter your 3 digit CVV number: ");
-        sc.nextLine();
+        sc.next();
         movie.setSeat(id, row, column);
-        cust.setBooking(cObject, movie.getId());
+        cust.setBooking(cObject, movie.getId(), movie.getShowTimings()[id]);
         System.out.println("Payment Successful. Your ticket number is " + movie.getId() + (int)Math.random()*1000000 + "\nThank You.");
     }
     
-    /*
-    * This method adds a new review
-    */
-    
     public void addReview(MovieDB movie, Customer cObj){
         System.out.println("Your review here");
-        String review = sc.nextLine();
+        String review = sc.next();
+        //write code to get customer's username here
         movie.setReview("@" + cObj.getUserName() + "," + review);
     }
     
-    /*
-    * This methods displays seats availability
-    */
     public void checkSeatAvailability(MovieDB movie, int id){
         int i;
         boolean[][][] allSeats = movie.getSeats();
@@ -106,9 +106,9 @@ public class MovieDetails {
             System.out.print("\n");
             for (i =0;i < seat.length;i++){
                 if(seat[i]==true){
-                    System.out.print("1\t");
+                    System.out.print("1 ");
                 } else {
-                    System.out.print("x\t");
+                    System.out.print("x");
                 }
             }
         }
