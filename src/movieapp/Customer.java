@@ -105,8 +105,8 @@ public class Customer extends Person {
             Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
         }
         MovieMenu menu = new MovieMenu();
-        MovieDB movies[] = new MovieDB[1];
         MovieDB menuObj = new MovieDB();
+        MovieDB movies[] = new MovieDB[menuObj.getTotalId()];
         try{
             movies = menuObj.getMovieArray(movies);
             menu.customerMenu(movies, cObject[0]);

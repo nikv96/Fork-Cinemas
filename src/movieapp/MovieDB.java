@@ -81,6 +81,10 @@ public class MovieDB {
         this.rating = rating;
     }
     
+    public int getTotalId(){
+        return total_id;
+    }
+    
     public String getMovieName(){
         return this.movieName;
     }
@@ -126,7 +130,11 @@ public class MovieDB {
     }
     
     public void setReview(String review) {
-        reviews[reviews.length] = new String(review);
+        String[] temp_reviews = new String[reviews.length+1];
+        for(int i=0;i<reviews.length;i++)
+            temp_reviews[i]= reviews[i];
+        temp_reviews[reviews.length] = review;
+        reviews = temp_reviews;
     }
     
     public void setRating(double rating) {

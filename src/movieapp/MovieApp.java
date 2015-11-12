@@ -21,15 +21,23 @@ public class MovieApp {
        
       
         String[] showTimings = {"Wednesday 3:00 pm", "Wednesday 5:30 pm"};
-        String[] reviews = {"@nikv96", "Huge Fan"};
+        String[] reviews = {"@nikv96, Huge Fan"};
         double[] rating = {4.5, 2.5, 3.5};
         MovieDB movieInit = new MovieDB("Madagascar", "Comedy", showTimings, 12.0, reviews, rating);
+        
+        System.out.println("Movie name is " + movieInit.getMovieName() + "\n\n");
+        
+        String[] showTimings1 = {"Wednesday 3:00 pm", "Wednesday 5:30 pm"};
+        String[] reviews1 = {"@nikv96", "Huge Fan"};
+        double[] rating1 = {4.5, 2.5, 3.5};
+        MovieDB movieInit1 = new MovieDB("Idiot", "Thriller", showTimings1, 12.0, reviews, rating);
         
         System.out.println("Movie name is " + movieInit.getMovieName() + "\n\n");
         
         try
         {
             movieInit.createMovie(movieInit);
+            movieInit.createMovie(movieInit1);
             
             Person pObj = new Person();
             pObj.checkType();

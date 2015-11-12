@@ -56,7 +56,7 @@ public class MovieDetails {
                 System.out.println("\n\nAdd a review? Y/N");
                 choice = sc.next().charAt(0);
                 if (choice == 'Y')
-                    addReview(movie);
+                    addReview(movie,cObj);
                 break;
             case 2:
                 System.out.println("Which slot do you want to go for?");
@@ -88,11 +88,11 @@ public class MovieDetails {
         System.out.println("Payment Successful. Your ticket number is " + movie.getId() + (int)Math.random()*1000000 + "\nThank You.");
     }
     
-    public void addReview(MovieDB movie){
+    public void addReview(MovieDB movie, Customer cObj){
         System.out.println("Your review here");
         String review = sc.next();
         //write code to get customer's username here
-        movie.setReview(review);
+        movie.setReview("@" + cObj.getUserName() + "," + review);
     }
     
     public void checkSeatAvailability(MovieDB movie, int id){
