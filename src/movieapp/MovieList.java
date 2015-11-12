@@ -24,12 +24,11 @@ public class MovieList {
         int ch;
          
         for (MovieDB movie : movies) {
-            System.out.format("%16s%16s%16s%16s", movie.getMovieName(), movie.getMovieType(), Arrays.toString(movie.getShowTimings()), movie.getPrice());
+            System.out.format("%16s%16s", movie.getMovieName(), movie.getMovieType());
         }
         System.out.println("Choose your movie:");
         ch = sc.nextInt();
-        
-        movieChoice.getMovieDetails(movies[ch], cObj);
+        movieChoice.getMovieDetails(movies[ch-1], cObj);
     }
     
     /*

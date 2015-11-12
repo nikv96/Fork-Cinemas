@@ -235,7 +235,7 @@ public class MovieDB {
     * This method gets the entire set of movies from the database and puts them in objects
     */
     
-    public void getMovieArray (MovieDB movies []) throws FileNotFoundException, IOException, ParseException{
+    public MovieDB[] getMovieArray (MovieDB movies []) throws FileNotFoundException, IOException, ParseException{
         JSONParser parser = new JSONParser();
         int id = 0;
         JSONObject obj1 = (JSONObject) parser.parse(new FileReader("movieData.txt"));
@@ -244,15 +244,15 @@ public class MovieDB {
         double[] s2;
         int i,j,k;
         boolean[][][] seats=null;
-        while (obj1.get(id)!=null){
-            arr = (JSONArray)obj1.get(id);
+        while (obj1.get(Integer.toString(id))!=null){
+            arr = (JSONArray)obj1.get(Integer.toString(id));
             
             //Showtimings
             arr2 = new JSONArray();
             arr2 = (JSONArray)arr.get(2);
             s = new String[arr2.size()];
             for(i=0;i<arr2.size();i++)
-                s[i] = ((JSONObject)arr2.get(i)).toString();
+                s[i] = (String) arr2.get(i);
             
             //Seats Available
             arr2 = new JSONArray();
@@ -274,17 +274,17 @@ public class MovieDB {
             arr2 = (JSONArray)arr.get(5);
             s1 = new String[arr2.size()];
             for(i=0;i<arr2.size();i++)
-                s1[i] = ((JSONObject)arr2.get(i)).toString();
+                s1[i] = (String) arr2.get(i);
             
             //Ratings
             arr2 = new JSONArray();
-            arr2 = (JSONArray)arr.get(5);
+            arr2 = (JSONArray)arr.get(6);
             s2 = new double[arr2.size()];
             for(i=0;i<arr2.size();i++)
                 s2[i] = (double) arr2.get(i);
             
-            movies[id] = new MovieDB(((JSONObject)arr.get(0)).toString(),
-                    ((JSONObject)arr.get(1)).toString(),
+            movies[id] = new MovieDB((arr.get(0)).toString(),
+                    (arr.get(1)).toString(),
                     s,
                     seats,
                     (double)arr.get(4),
@@ -292,6 +292,7 @@ public class MovieDB {
                     s2);
             id++;
         }
+        return movies;
     }
     
     /*

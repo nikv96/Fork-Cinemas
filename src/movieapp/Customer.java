@@ -82,11 +82,11 @@ public class Customer extends Person {
     public void displayMenu()
     {
         MovieMenu menu = new MovieMenu();
-        MovieDB movies[] = new MovieDB[10];
+        MovieDB movies[] = new MovieDB[1];
         MovieDB menuObj = new MovieDB();
         try{
-            menuObj.getMovieArray(movies);
-            menu.customerMenu(movies, cObject[total_id]);
+            movies = menuObj.getMovieArray(movies);
+            menu.customerMenu(movies, cObject[0]);
         } catch(IOException | ParseException e)
         {
             e.getMessage();
