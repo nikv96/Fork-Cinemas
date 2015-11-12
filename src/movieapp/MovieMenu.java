@@ -20,11 +20,11 @@ public class MovieMenu {
     */
     public void customerMenu(MovieDB[] movies, Customer customer){
         do {
-            System.out.println("1. List All Movies\n"
-                    + "2. Search Movies by Name\n"
-                    + "3. Search Movies by Type\n"
-                    + "4. List Top 5 Movies\n"
-                    + "5. View Booking History\nEnter your choice");
+            System.out.print("\n\t\t1. List All Movies\n"
+                    + "\t\t2. Search Movies by Name\n"
+                    + "\t\t3. Search Movies by Type\n"
+                    + "\t\t4. List Top 5 Movies\n"
+                    + "\t\t5. View Booking History\nEnter your choice: ");
             menuCChoice = sc.nextInt();
             switch(menuCChoice){
                 case 1: //List all

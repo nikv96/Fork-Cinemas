@@ -17,51 +17,14 @@ import org.json.simple.parser.ParseException;
  */
 public class CustomerDB {
     
-    public String getName(Customer c)
-    {
-        return c.name;
-    }
-    
-    public String getPassword(Customer c)
-    {
-        return c.password;
-    }
-    
-    public String getEmailID(Customer c)
-    {
-        return c.emailID;
-    }
-    
-    public void setUsername(Customer c, String user)
-    {
-        c.username = user;
-    }
-    
-    public void setPassword(Customer c, String pass)
-    {
-        c.password = pass;
-    }
-    
-    public void setEmailID(Customer c, String email)
-    {
-        c.emailID = email;
-    }
-    
-    public void setBooking(Customer c, int id, String slot)
-    {
+    public void setBooking(Customer c, int id, String slot){
         c.booked[id] = (int)(slot.charAt(0)) + 1;
         System.out.println(""+c.booked[id]);
         //write back to file later
     }
     
-    public void setAge(Customer c, int age)
-    {
-        c.age = age;
-    }
-    
-    
-    public static boolean checkUser(String user, String pwd) throws IOException, ParseException
-    {
+    public static boolean checkUser(String user, String pwd) throws IOException, 
+            ParseException{
         JSONParser parser = new JSONParser();
         JSONObject objFull = new JSONObject();
         File f = new File("customerData.txt");
@@ -82,40 +45,37 @@ public class CustomerDB {
     }
     
     public static JSONObject addCustomer(Customer c) throws IOException, FileNotFoundException, ParseException{
-      //basic writing code
       JSONObject obj = new JSONObject();
       JSONArray arr = new JSONArray();
-      arr.add(c.name); //0
-      arr.add(c.age);//1
-      arr.add(c.emailID);//2
-      arr.add(c.phone);//3
-      arr.add(c.postalCode);//4
-      arr.add(c.gender);//5
-      arr.add(c.username);//6
-      arr.add(c.password);//7
+      arr.add(c.getName()); //0
+      arr.add(c.getAge());//1
+      arr.add(c.getEmailID());//2
+      arr.add(c.getPhone());//3
+      arr.add(c.getPostal());//4
+      arr.add(c.getGender());//5
+      arr.add(c.getUserName());//6
+      arr.add(c.getPassword());//7
       JSONArray childJsonArray = new JSONArray();
       for(int i=0;i<c.booked.length;i++){
           childJsonArray.add(c.booked[i]);
       }
       arr.add(childJsonArray);//8
       obj.put(c.id,arr);
-      try (FileWriter file = new FileWriter("customerData.txt"))
-      {
-		file.write(obj.toJSONString());
-        }
+      try (FileWriter file = new FileWriter("customerData.txt")){
+          file.write(obj.toJSONString());
+      }
       
       return obj;
     }
     
     public static int configUser(String user) throws IOException, FileNotFoundException, ParseException{
-    //looks for the appropriate username and returns if existing, allowing access to that customer's details
-        
+    
         JSONParser parser = new JSONParser();
         JSONObject objFull = new JSONObject();
-      File f = new File("customerData.txt");
-      if(f.exists()) { 
-          objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
-      }
+        File f = new File("customerData.txt");
+        if(f.exists()) { 
+            objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
+        }
         JSONArray arrRow;
         boolean present = false;
         

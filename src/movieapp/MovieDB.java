@@ -18,25 +18,25 @@ import org.json.simple.parser.ParseException;
  */
 public class MovieDB {
     
-    protected String movieName;
+    private String movieName;
     
-    protected String movieType;
+    private String movieType;
     
-    protected String[] showTimings;
+    private String[] showTimings;
     
-    protected boolean[][][] seats;
+    private boolean[][][] seats;
     
-    protected double price;
+    private double price;
     
-    protected String[] reviews;
+    private String[] reviews;
     
-    protected double[] rating;
+    private double[] rating;
             
     private static int total_id = 0;
     
     private int id;
     
-    protected MovieDB allMovies[];
+    private MovieDB allMovies[];
     
     public MovieDB(){
     }
@@ -53,8 +53,6 @@ public class MovieDB {
                     this.seats[i][j][k]=false;
         this.reviews = review;
         this.rating = rating;
-       
-        
     }
     public MovieDB(String movieName, String movieType, String[] showTimings,
             double price, String[] reviews, double[] rating){
@@ -118,8 +116,7 @@ public class MovieDB {
         return this.rating;
     }
     
-    public double getRatingAverage()
-    {
+    public double getRatingAverage(){
         double sum =0;
         for(int i=0;i<rating.length;i++)
             sum += rating[i];
@@ -152,7 +149,6 @@ public class MovieDB {
     * This method adds a new movie to the JSON file
     */
     
-    @SuppressWarnings("empty-statement")
     public void createMovie (MovieDB movie) throws IOException, ParseException{
       JSONParser parser = new JSONParser();
       JSONObject obj = new JSONObject();
@@ -199,6 +195,7 @@ public class MovieDB {
                file.write(obj.toJSONString());
 	}
     }
+    
     /*
     * This method deletes a particular movie from the JSON file
     */
@@ -212,12 +209,17 @@ public class MovieDB {
           {
               obj1.remove(Integer.toString(i));
               total_id--;
+              break;
           }
           i++;
       }
       
-      MovieDB[] movies = new MovieDB[total_id+1];
-      movies = this.getMovieArray(movies);
+      try (FileWriter file = new FileWriter("movieData.txt")) {
+	file.write(obj1.toJSONString());
+      }
+      
+      MovieDB[] movies = new MovieDB[total_id];
+      movies = this.getMovieArray(movies,i);
       this.updateMovieListings(movies);
     }
     
@@ -238,16 +240,23 @@ public class MovieDB {
            * 4. Price
            */
           case 1:
-              System.out.println("Please enter the new Movie Name:");
-              arr.add(0, sc.next()); 
+              System.out.print("\nPlease enter the new Movie Name: ");
+              arr.add(0, sc.nextLine()); 
               break;
           case 2:
-              System.out.println("Please enter the new Movie Type:");
+              System.out.print("Please enter the new Movie Type: ");
               arr.add(1, sc.next()); 
               break; 
-          case 4:
-              System.out.println("Please enter the new Price:");
-              arr.add(3, sc.nextFloat()); 
+          case 3:
+              JSONArray childJsonArray = new JSONArray();
+              System.out.print("Please enter the new Show Timings: ");
+                char choice = 'y';
+                do {
+                    childJsonArray.add(sc.nextLine());
+                    System.out.println("More shows? ");
+                    choice = sc.next().charAt(0);
+                } while (choice == 'y'|| choice == 'Y');
+                arr.add(2,childJsonArray);
               break;
           default:
               break;
@@ -322,6 +331,70 @@ public class MovieDB {
         return movies;
     }
     
+    public MovieDB[] getMovieArray (MovieDB movies [], int check_id) throws FileNotFoundException, IOException, ParseException{
+        JSONParser parser = new JSONParser();
+        JSONObject obj1 = (JSONObject) parser.parse(new FileReader("movieData.txt"));
+        JSONArray arr,arr2,arr3,arr4;
+        int id=0,id1=0;
+        String[] s,s1;
+        double[] s2;
+        int i,j,k;
+        boolean[][][] seats=null;
+        if(id==check_id)
+            id++;
+        while (obj1.get(Integer.toString(id))!=null){
+            arr = (JSONArray)obj1.get(Integer.toString(id));
+            
+            //Showtimings
+            arr2 = new JSONArray();
+            arr2 = (JSONArray)arr.get(2);
+            s = new String[arr2.size()];
+            for(i=0;i<arr2.size();i++)
+                s[i] = (String) arr2.get(i);
+            
+            //Seats Available
+            arr2 = new JSONArray();
+            arr2 = (JSONArray)arr.get(3);
+            seats = new boolean[10][40][10];
+            for(i=0;i<arr2.size();i++){
+                arr3 = new JSONArray();
+                arr3 = (JSONArray)arr2.get(i);
+                for(j=0;j<arr3.size();j++){
+                    arr4 = new JSONArray();
+                    arr4 = (JSONArray)arr3.get(j);
+                    for(k=0;k<arr4.size();k++)
+                        seats[i][j][k]=(boolean) arr4.get(k);
+                }
+            }
+            
+            //Reviews
+            arr2 = new JSONArray();
+            arr2 = (JSONArray)arr.get(5);
+            s1 = new String[arr2.size()];
+            for(i=0;i<arr2.size();i++)
+                s1[i] = (String) arr2.get(i);
+            
+            //Ratings
+            arr2 = new JSONArray();
+            arr2 = (JSONArray)arr.get(6);
+            s2 = new double[arr2.size()];
+            for(i=0;i<arr2.size();i++)
+                s2[i] = (double) arr2.get(i);
+            
+            movies[id1++] = new MovieDB((arr.get(0)).toString(),
+                    (arr.get(1)).toString(),
+                    s,
+                    seats,
+                    (double)arr.get(4),
+                    s1,
+                    s2);
+            id++;
+            if(id==check_id)
+                id++;
+        }
+        return movies;
+    }
+    
     /*
     * This method updates the entire movie listings
     */
@@ -364,4 +437,20 @@ public class MovieDB {
                file.write(obj.toJSONString());
 	}
     }
+    
+    public double calcPrice(String cineType, Customer cObj){
+        double finalPrice = 0.0;
+        finalPrice = this.getPrice();
+        
+        if(cObj.getAge() >= 60){
+            finalPrice = finalPrice * 0.94;
+        }
+        if(this.getMovieType().equals("3D")){
+            finalPrice = finalPrice * 1.05;
+        }
+        if(cineType.equals("Platinum"))
+            return finalPrice*1.10;
+        return finalPrice;
+    }
+    
 }

@@ -15,9 +15,8 @@ public class MovieDetails {
     
     CustomerDB cust = new CustomerDB();
     
-    public void getMovieDetails(MovieDB movie, Customer cObj)
-    {
-        int ch = 0; double finalPrice = 0.0;
+    public void getMovieDetails(MovieDB movie, Customer cObj) {
+        int ch = 0;
         char choice; String slot = "";
         System.out.println(movie.getMovieName());
         System.out.println("Movie Type: " + movie.getMovieType());
@@ -25,20 +24,8 @@ public class MovieDetails {
         for (String showTiming : movie.getShowTimings()) {
             System.out.print(showTiming + "\t");
         }
-        finalPrice = movie.getPrice();
-        
-        if(cObj.getAge() >= 60)
-        {
-            finalPrice = finalPrice * 0.94;
-        }
-        if(movie.getMovieType().equals("3D"))
-        {
-            finalPrice = finalPrice * 1.05;
-        }
-        
-            
-        System.out.println("Deluxe Price: " + finalPrice);
-        System.out.println("Platinum Price: " + finalPrice*1.10);
+        System.out.println("Deluxe Price: " + movie.calcPrice("Deluxe",cObj));
+        System.out.println("Platinum Price: " + movie.calcPrice("Platinum", cObj));
         float sum = 0;
         for (int i=0;i<movie.getRating().length;i++) {
             sum += movie.getRating()[i];
@@ -46,7 +33,8 @@ public class MovieDetails {
         System.out.println("Ratings: " + sum/movie.getRating().length);
         do
         {
-        System.out.println("1. See Reviews 2. Check Seats 3. Back");
+        System.out.print("1. See Reviews 2. Check Seats 3. Back"
+                + "\nEnter your choice: ");
         ch = sc.nextInt();
         switch (ch){
             case 1:

@@ -12,7 +12,7 @@ import org.json.simple.parser.ParseException;
  * @author Team Fork
  */
 public class Staff extends Person{
-    protected String cineplex;
+    private String cineplex;
     
     static StaffDB staffObj[] = new StaffDB[10];
     
@@ -26,18 +26,17 @@ public class Staff extends Person{
     
     MovieList listEdit = new MovieList();
     
+    //get method
+    
+    public String getCineplex(){
+        return cineplex;
+    }
+    
     public Staff(){
     }
     
     public Staff(String name, int age, String emailid, long phno, long postal, String gender, String user, String pass, String cineplex) {
-        this.name = name;
-        this.age = age;
-        this.emailID = emailid;
-        this.phone = phno;
-        this.postalCode = postal;
-        this.gender = gender;
-        this.username = user;
-        this.password = pass;
+        super(name,age,emailid,phno,postal,gender,user,pass);
         this.cineplex = cineplex;
     }
     
@@ -50,22 +49,20 @@ public class Staff extends Person{
         boolean flag;
         do{
             super.login();
-            flag = StaffDB.readStaff(username, password);
-            if (flag == false)
-            {
-                System.out.println("Either username or password is wrong.");
-                System.out.println("1. Sign up 2. Login");
+            flag = StaffDB.readStaff(this.getUserName(), this.getPassword());
+            if (flag == false){
+                System.out.print("\nEither username or password is wrong.");
+                System.out.print("\n1. Sign up 2. Login\nEnter you choice: ");
                 ch = sc.nextInt();
                 if(ch == 1){
                     signup();
-                    login();
                     flag = true;
                 }
             
             }
                 
         } while (flag !=true);
-        System.out.println("Menu\n");
+        System.out.println("Login successful!");
         displayMenu();
         }
         catch(IOException | ParseException e){
@@ -73,85 +70,57 @@ public class Staff extends Person{
         }
     }
     
+    /*
+    *Staff implementation of signup
+    */
+    
     @Override
     public void signup(){
        super.signup();
-       System.out.println("Enter cineplex name: ");
+       System.out.print("\nEnter cineplex name: ");
        cineplex = sc.next();
-       Staff s = new Staff();
-        Staff.id++;
-        s.name = name;
-        s.username = username;
-        s.password = password;
-        s.age = age;
-        s.gender = gender;
-        s.emailID = emailID;
-        s.phone = phone;
-        s.postalCode = postalCode;
-        s.cineplex = cineplex;
-       
+       Staff.id++;
        try {
-           staffJSON[Staff.id] = StaffDB.addStaff(s);
+           staffJSON[Staff.id] = StaffDB.addStaff(this);
        }
        catch(IOException | ParseException e){
            e.getMessage();
        }
+       login();
     }
+    
+    /*
+    * Displays menu 
+    */
     
     @Override
     public void displayMenu(){
-        String userConfig;
-        int ch; char c; boolean check;
-        System.out.println("Enter M for Movies Update OR U for User Account Update:");
+        char c;
+        System.out.print("\nEnter 'M' for editing Movie Details or 'C' for editing Customer Details: ");
         c = sc.next().charAt(0);
-        if(c == 'U'){
+        if(c == 'C' || c == 'c'){
             userEdits();
         }
-        else if(c == 'M'){
+        else if(c == 'M' || c=='m'){
            movieEdits();
         }
-  
- 
     }
     
     public void userEdits(){
-        //will be updated as the get & set methods are completed
         String userConfig;
         int ch; int check_id;
         try{
-        System.out.println("Enter username of customer account to configure:");
+        System.out.print("\nEnter username of customer account to configure: ");
         userConfig = sc.next();
-        
         check_id = CustomerDB.configUser(userConfig);
         
-       /* 
-        if(check_id>=0 && c=='S')
-        {
-            System.out.println("Menu:\n1. Change username\n2. Change password\n3. Change name\n4. Change email ID\n5. Logout\t\t\t\t6. Exit");
-           ch = sc.nextInt();
-           switch(ch)
-           {
-               case 1:
-                   staffJSON[check_id].replace(check_id, username, sc.next());
-                   break;
-               case 2:
-                   staffJSON[check_id].replace(check_id, password, sc.next());
-                   break;
-               case 3:
-                   staffJSON[check_id].replace(check_id, name, sc.next());
-                   break;
-               case 4:
-                   staffJSON[check_id].replace(check_id, emailID, sc.next());
-                   break;
-               default:
-                   //later
-           }
-           //update .txt file
-           
-        }*/
         if(check_id>=0)
         {
-            System.out.println("Menu:\n1. Change username\n2. Change password\n3. Change name\n4. Change email ID\n5. Logout\t\t\t\t6. Exit");
+            System.out.print("\n\t\t1. Change username"
+                    + "\n\t\t2. Change password\n"
+                    + "\t\t3. Change name\n"
+                    + "\t\t4. Change email ID\n"
+                    + "5. Logout\t\t\t\t6. Exit\nPlease enter your choice: ");
             ch = sc.nextInt();
             JSONParser parser = new JSONParser();
             Scanner sc = new Scanner (System.in);
@@ -164,22 +133,22 @@ public class Staff extends Person{
                  * 4. Email ID
                  */
                 case 1:
-                    System.out.println("Please enter the new username:");
+                    System.out.print("Please enter the new username: ");
                     arr.remove(6);
                     arr.add(6, sc.next());
                     break;
                 case 2:
-                    System.out.println("Please enter the new password:");
+                    System.out.print("Please enter the new password: ");
                     arr.remove(7);
                     arr.add(7, sc.next()); 
                     break; 
                 case 3:
-                    System.out.println("Please enter the new name:");
+                    System.out.print("Please enter the new name: ");
                     arr.remove(0);
-                    arr.add(0, sc.next());
+                    arr.add(0, sc.nextLine());
                     break;
                 case 4:
-                    System.out.println("Please enter the new email ID:");
+                    System.out.print("Please enter the new email ID: ");
                     arr.remove(2);
                     arr.add(2, sc.next());
                     break;
@@ -208,10 +177,12 @@ public class Staff extends Person{
         char choice = 0;
         int i=0;
         try{
-            
-            
             do{
-            System.out.println("Menu:\n1. Create Movie\n2. Update Movie\n3. Delete Movie\n4. Update Movie Listing\n5. Logout\t\t\t\t6. Exit");
+            System.out.print("\n\t\t1. Create Movie"
+                    + "\n\t\t2. Update Movie\n"
+                    + "\t\t3. Delete Movie"
+                    + "\n\t\t4. Update Movie Listing"
+                    + "\n[5] Logout\t\t\t\t[6] Exit\nPlease enter your choice: ");
            ch = sc.nextInt();
            
            MovieDB editObj = new MovieDB();
@@ -232,26 +203,26 @@ public class Staff extends Person{
                    if(newMovies[newMovies.length - 1] == null)
                        id = 0;
                    else
-                        id = newMovies[newMovies.length - 1].getShowTimings().length - 1;
-                   System.out.println("Enter Movie Name");
+                       id = newMovies[newMovies.length - 1].getShowTimings().length - 1;
+                   System.out.print("\nEnter Movie Name: ");
                    movieName = sc.next();
-                   System.out.println("Enter Movie Type");
+                   System.out.print("\nEnter Movie Type(Comedy,Thriller,etc): ");
                    String movieType = sc.next();
-                   System.out.println("Enter Show Timings");
+                   System.out.println("Enter Show Timings.");
                    do{
-                       System.out.println("Enter Date and time:");
-                        timings = Integer.toString(id)+sc.next();
-                        showTimings = setNewShowTimings(showTimings, timings);
+                       System.out.print("Enter day,time (ex: Wednesday,1:00PM): ");
+                       timings = Integer.toString(id)+sc.next();
+                       showTimings = setNewShowTimings(showTimings, timings);
                         
-                        System.out.println("More shows?");
-                        choice = sc.next().charAt(0);
+                       System.out.println("More shows?");
+                       choice = sc.next().charAt(0);
                    }while(choice == 'y' || choice == 'Y');
                    
-                   System.out.println("Enter Expert Review");
+                   System.out.print("Enter Expert Review: ");
                    String[] review = new String[1];
-                   review[0] = sc.next();
+                   review[0] = sc.nextLine();
                    
-                   System.out.println("Enter Expert Rating(out of 5)");
+                   System.out.print("Enter Expert Rating(out of 5): ");
                    double[] rating = new double[1];
                    rating[0] = sc.nextDouble();
                    
@@ -259,15 +230,26 @@ public class Staff extends Person{
                    movieEditObj.createMovie(movieEditObj);
                    break;
                case 2:
+                    System.out.format("\t%4s%16s%16s%50s\n", "#", "Movie Name", "Movie Type","Show Timings");
+                    System.out.println("\t-------------------------------------------------------------------------------------------------");
                     for (MovieDB movie : allMovies) {
-                        System.out.format("%16s%16s", movie.getMovieName(), movie.getMovieType());
+                        String s = new String();
+                        for(i=0;i<movie.getShowTimings().length;i++)
+                            s += " " + (movie.getShowTimings())[i];
+                        i=1;
+                        System.out.format("\t%4d%16s%16s%56s\n", i++,
+                                movie.getMovieName(), movie.getMovieType(),s);
                     }
-                    System.out.println("Choose your movie:");
+                    System.out.print("\nChoose your movie(Enter serial number): ");
                     ch = sc.nextInt();
 
-                    System.out.println("Menu:\n1. Change Movie Name\n2. Change Movie Type\n3. Update Show Timings\n4. Change Movie Price\n5. Logout\t\t\t\t6. Exit");
+                    System.out.print("\n\t\t1. Change Movie Name\n"
+                            + "\t\t2. Change Movie Type\n"
+                            + "\t\t3. Update Show Timings\n"
+                            + "[4] Logout\t\t\t\t[7] Exit\n"
+                            + "Enter your choice: ");
                     c2 = sc.nextInt();
-                    movieEditObj.updateMovie(ch, c2);
+                    movieEditObj.updateMovie(ch-1, c2);
                    break;
                case 3:
                    System.out.println("Enter Movie Name");
@@ -275,7 +257,6 @@ public class Staff extends Person{
                    break;
                case 4: movieEditObj.updateMovieListings(allMovies);
                default:
-                   //later
            }
             }while(ch < 4);
         }

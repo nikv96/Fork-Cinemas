@@ -22,11 +22,12 @@ public class MovieList {
         movies = movieList;
        
         int ch;
-         
+        int id=1;
+        System.out.format("%4s%16s%16s\n","#","Movie Name","Movie Type");
         for (MovieDB movie : movies) {
-            System.out.format("%16s%16s \n", movie.getMovieName(), movie.getMovieType());
+            System.out.format("%4d%16s%16s \n", id++, movie.getMovieName(), movie.getMovieType());
         }
-        System.out.println("Choose your movie:");
+        System.out.print("Choose your movie:");
         ch = sc.nextInt();
         movieChoice.getMovieDetails(movies[ch-1], cObj);
     }

@@ -28,15 +28,9 @@ public class Customer extends Person {
     public Customer(){
     }
 
-    public Customer(String name, int age, String emailid, long phno, long postal, String gender, String user, String pass, int[] book) {
-        this.name = name;
-        this.age = age;
-        this.emailID = emailid;
-        this.phone = phno;
-        this.postalCode = postal;
-        this.gender = gender;
-        this.username = user;
-        this.password = pass;
+    public Customer(String name, int age, String emailid, long phno,
+            long postal, String gender, String user, String pass, int[] book) {
+        super(name,age,emailid,phno,postal,gender,user,pass);
         this.booked = book;
     }
     
@@ -47,10 +41,10 @@ public class Customer extends Person {
         boolean flag;
         do{
             super.login();
-            flag = CustomerDB.checkUser(username, password);
+            flag = CustomerDB.checkUser(this.getUserName(), this.getPassword());
             if ( flag == false ){
                 System.out.println("Either username or password is wrong.");
-                System.out.println("1. Sign up 2. Login");
+                System.out.print("\n1. Sign up 2. Login\nPlease enter your choice: ");
                 ch = sc.nextInt();
                 if(ch == 1)
                 {
@@ -74,26 +68,17 @@ public class Customer extends Person {
     @Override
     public void signup (){
         super.signup();
-        Customer c = new Customer();
-        c.id = total_id++;
-        c.name = name;
-        c.username = username;
-        c.password = password;
-        c.age = age;
-        c.gender = gender;
-        c.emailID = emailID;
-        c.phone = phone;
-        c.postalCode = postalCode;
-        c.booked = new int[]{0,0,0,0,0,0,0,0,0,0,0,0};
+        this.id = total_id++;
+        this.booked = new int[]{0,0,0,0,0,0,0,0,0,0,0,0};
         
         try{
-            cObject[total_id] = c;
-            custJSON[total_id] = CustomerDB.addCustomer(c);
+            cObject[total_id] = this;
+            custJSON[total_id] = CustomerDB.addCustomer(this);
         } catch(IOException | ParseException e)
         {
             e.getMessage();
         }
-                
+        login();        
     }
     
     @Override
@@ -117,7 +102,6 @@ public class Customer extends Person {
         
     }
 
-    
     public int[] getBookingHistory(Customer cObject)
     {
         return cObject.booked;
