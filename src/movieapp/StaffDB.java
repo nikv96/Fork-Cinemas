@@ -54,7 +54,7 @@ public class StaffDB {
         s.emailID = email;
     }
     
-    public void setGender(Staff s, char gender)
+    public void setGender(Staff s, String gender)
     {
         s.gender = gender;
     }
@@ -79,7 +79,7 @@ public class StaffDB {
         boolean present = false;
        System.out.println("checking2..");
         for ( int i = 0; i<objFull.size();i++){
-            arrRow = (JSONArray) objFull.get(i);
+            arrRow = (JSONArray) objFull.get(Integer.toString(i+1));
             if (user.equals(arrRow.get(6).toString()))
             {
                 if (pwd.equals(arrRow.get(7).toString()))

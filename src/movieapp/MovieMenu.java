@@ -23,7 +23,7 @@ public class MovieMenu {
             System.out.println("1. List All Movies\n"
                     + "2. Search Movies by Name\n"
                     + "3. Search Movies by Type\n"
-                    + "4. List Top 5 Movie\n"
+                    + "4. List Top 5 Movies\n"
                     + "5. View Booking History\nEnter your choice");
             menuCChoice = sc.nextInt();
             switch(menuCChoice){

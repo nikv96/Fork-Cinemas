@@ -12,7 +12,8 @@ import org.json.simple.parser.ParseException;
  */
 public class MovieApp {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         
         //call movie create multiple times
         //String movieName, String movieType, String[] showTimings,

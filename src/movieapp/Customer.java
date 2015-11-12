@@ -29,7 +29,7 @@ public class Customer extends Person {
         boolean flag;
         do{
             super.login();
-           flag = CustomerDB.checkUser(username, password);
+            flag = CustomerDB.checkUser(username, password);
             if ( flag == false ){
                 System.out.println("Either username or password is wrong.");
                 System.out.println("1. Sign up 2. Login");
@@ -45,9 +45,9 @@ public class Customer extends Person {
         } while (flag !=true);
         displayMenu();
         }
-        catch(IOException | ParseException e)
+        catch(Exception e)
         {
-            e.getMessage();
+            e.printStackTrace();
         }
         
     }
@@ -86,7 +86,7 @@ public class Customer extends Person {
         MovieDB menuObj = new MovieDB();
         try{
             menuObj.getMovieArray(movies);
-            menu.customerMenu(movies, cObject[total_id - 1]);
+            menu.customerMenu(movies, cObject[total_id]);
         } catch(IOException | ParseException e)
         {
             e.getMessage();

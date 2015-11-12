@@ -25,7 +25,7 @@ public class Person {
     
     protected long postalCode;
     
-    protected char gender;
+    protected String gender;
     
     protected char type;
     
@@ -89,7 +89,7 @@ public class Person {
         System.out.println("Postal Code: ");
         postalCode = sc.nextLong();
         System.out.println("Gender(M/F): ");
-        gender = sc.next().charAt(0);
+        gender = sc.next();
     }
     
     public void checkType ()

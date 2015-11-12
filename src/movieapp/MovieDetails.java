@@ -14,8 +14,9 @@ public class MovieDetails {
     
     CustomerDB cust = new CustomerDB();
     
-    public void getMovieDetails(MovieDB movie, Customer cObj){
-        int ch = 0;
+    public void getMovieDetails(MovieDB movie, Customer cObj)
+    {
+        int ch = 0; double finalPrice = 0.0;
         char choice;
         System.out.println(movie.getMovieName());
         System.out.println("Movie Type: " + movie.getMovieType());
@@ -23,13 +24,27 @@ public class MovieDetails {
         for (String showTiming : movie.getShowTimings()) {
             System.out.print(showTiming + "\t");
         }
-        System.out.println("Price: " + movie.getPrice());
+        finalPrice = movie.getPrice();
+        
+        if(cObj.getAge() >= 60)
+        {
+            finalPrice = finalPrice * 0.94;
+        }
+        if(movie.getMovieType().equals("3D"))
+        {
+            finalPrice = finalPrice * 1.05;
+        }
+        
+            
+        System.out.println("Deluxe Price: " + finalPrice);
+        System.out.println("Platinum Price: " + finalPrice*1.10);
         float sum = 0;
         for (int i=0;i<movie.getRating().length;i++) {
             sum += movie.getRating()[i];
         }
         System.out.println("Ratings: " + sum/movie.getRating().length);
-        do{
+        do
+        {
         System.out.println("1. See Reviews 2. Check Seats 3. Back");
         ch = sc.nextInt();
         switch (ch){
@@ -59,14 +74,15 @@ public class MovieDetails {
         }while ( ch!=3 );
     }
     
-    public void booking(MovieDB movie, int row, int column, Customer cObject){
+    public void booking(MovieDB movie, int row, int column, Customer cObject)
+    {
         System.out.println("Please enter your 16 digit credit card number: ");
         c.readPassword();
         System.out.println("Please enter your 3 digit CVV number: ");
         c.readPassword();
         movie.setSeat(row, column);
         cust.setBooking(cObject, movie.getId());
-        System.out.println("Payment Successful. Your ticket number is " + movie.getId());
+        System.out.println("Payment Successful. Your ticket number is " + movie.getId() + (int)Math.random()*1000000 + "\nThank You.");
     }
     
     public void addReview(MovieDB movie){
