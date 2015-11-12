@@ -59,12 +59,15 @@ public class MovieDetails {
                     addReview(movie);
                 break;
             case 2:
-                checkSeatAvailability(movie);
+                System.out.println("Which slot do you want to go for?");
+                int id;
+                id = sc.nextInt();
+                checkSeatAvailability(movie, id);
                 System.out.println("\n\nBook a seat? Y/N");
                 choice = sc.next().charAt(0);
                 if (choice == 'Y'){
                     System.out.println("Enter seat number(Row -- Column): ");
-                    booking(movie, sc.nextInt(), sc.nextInt(), cObj);
+                    booking(movie, sc.nextInt(), sc.nextInt(), id, cObj);
                 }
                 break;
             case 3:
@@ -74,13 +77,13 @@ public class MovieDetails {
         }while ( ch!=3 );
     }
     
-    public void booking(MovieDB movie, int row, int column, Customer cObject)
+    public void booking(MovieDB movie, int row, int column, int id, Customer cObject)
     {
         System.out.println("Please enter your 16 digit credit card number: ");
         c.readPassword();
         System.out.println("Please enter your 3 digit CVV number: ");
         c.readPassword();
-        movie.setSeat(row, column);
+        movie.setSeat(id, row, column);
         cust.setBooking(cObject, movie.getId());
         System.out.println("Payment Successful. Your ticket number is " + movie.getId() + (int)Math.random()*1000000 + "\nThank You.");
     }
@@ -92,9 +95,10 @@ public class MovieDetails {
         movie.setReview(review);
     }
     
-    public void checkSeatAvailability(MovieDB movie){
+    public void checkSeatAvailability(MovieDB movie, int id){
         int i;
-        boolean[][] seats = movie.getSeats();
+        boolean[][][] allSeats = movie.getSeats();
+        boolean[][] seats = allSeats[id];
         for (boolean[] seat : seats) {
             System.out.print("\n");
             for (i =0;i < seat.length;i++){

@@ -24,7 +24,7 @@ public class MovieDB {
     
     protected String[] showTimings;
     
-    protected boolean[][] seats;
+    protected boolean[][][] seats;
     
     protected double price;
     
@@ -41,22 +41,37 @@ public class MovieDB {
     public MovieDB(){
     }
     
+    public MovieDB(String movieName, String movieType, String[] showTimings){
+        this.movieName = movieName;
+        this.movieType = movieType;
+        this.showTimings = showTimings;
+        this.price = 20;
+        this.seats = new boolean[10][40][10];
+        for(int i =0;i<10;i++)
+            for(int j=0;j<40;j++)
+                for(int k=0;k<10;k++)
+                    this.seats[i][j][k]=false;
+        this.reviews = null;
+        this.rating = null;
+        
+    }
     public MovieDB(String movieName, String movieType, String[] showTimings,
             double price, String[] reviews, double[] rating){
         this.movieName = movieName;
         this.movieType = movieType;
         this.price = price;
         this.showTimings = showTimings;
-        this.seats = new boolean[10][40];
+        this.seats = new boolean[10][40][10];
         for(int i =0;i<10;i++)
             for(int j=0;j<40;j++)
-                this.seats[i][j]=false;
+                for(int k=0;k<10;k++)
+                    this.seats[i][j][k]=false;
         this.reviews = reviews;
         this.rating = rating;
     }
     
     public MovieDB(String movieName, String movieType, String[] showTimings,
-            boolean[][] seats, double price,String[] reviews, double[] rating){
+            boolean[][][] seats, double price,String[] reviews, double[] rating){
         this.movieName = movieName;
         this.movieType = movieType;
         this.price = price;
@@ -78,7 +93,7 @@ public class MovieDB {
         return this.showTimings;
     }
     
-    public boolean[][] getSeats(){
+    public boolean[][][] getSeats(){
         return this.seats;
     }
     
@@ -106,8 +121,8 @@ public class MovieDB {
         return sum/rating.length;
     }
     
-    public void setSeat(int row, int column){
-        this.seats[row][column] = true;
+    public void setSeat(int row, int column, int showId){
+        this.seats[row][column][showId] = true;
     }
     
     public void setReview(String review) {
@@ -136,12 +151,15 @@ public class MovieDB {
       parentJsonArray.addAll(Arrays.asList(movie.showTimings));
       jsonArray.add(parentJsonArray);
       parentJsonArray = new JSONArray();
-      for (boolean[] seat : movie.seats) {
-            JSONArray childJsonArray = new JSONArray();
-            for (int j = 0; j<movie.seats.length; j++) {
-                childJsonArray.add(seat[j]);
+      for (boolean[][] seatsCheck : movie.seats) {
+            JSONArray childJsonArray1 = new JSONArray();
+            for (boolean[] seat : seatsCheck) {
+                JSONArray childJsonArray2 = new JSONArray();
+                for(int k=0; k<seat.length ; k++)
+                    childJsonArray2.add(seat[k]);
+                childJsonArray1.add(childJsonArray2);
             }
-            parentJsonArray.add(childJsonArray);
+            parentJsonArray.add(childJsonArray1);
         }
       jsonArray.add(parentJsonArray);
       jsonArray.add(movie.price);
@@ -221,11 +239,11 @@ public class MovieDB {
         JSONParser parser = new JSONParser();
         int id = 0;
         JSONObject obj1 = (JSONObject) parser.parse(new FileReader("movieData.txt"));
-        JSONArray arr,arr2,arr3;
+        JSONArray arr,arr2,arr3,arr4;
         String[] s,s1;
         double[] s2;
-        int i,j;
-        boolean[][] seats=null;
+        int i,j,k;
+        boolean[][][] seats=null;
         while (obj1.get(id)!=null){
             arr = (JSONArray)obj1.get(id);
             
@@ -239,12 +257,16 @@ public class MovieDB {
             //Seats Available
             arr2 = new JSONArray();
             arr2 = (JSONArray)arr.get(3);
+            seats = new boolean[10][40][10];
             for(i=0;i<arr2.size();i++){
                 arr3 = new JSONArray();
                 arr3 = (JSONArray)arr2.get(i);
-                seats = new boolean[10][40];
-                for(j=0;j<arr3.size();j++)
-                    seats[i][j]=(boolean) arr3.get(j);
+                for(j=0;j<arr3.size();j++){
+                    arr4 = new JSONArray();
+                    arr4 = (JSONArray)arr3.get(j);
+                    for(k=0;k<arr4.size();k++)
+                        seats[i][j][k]=(boolean) arr4.get(k);
+                }
             }
             
             //Reviews
@@ -268,6 +290,7 @@ public class MovieDB {
                     (double)arr.get(4),
                     s1,
                     s2);
+            id++;
         }
     }
     
@@ -287,12 +310,15 @@ public class MovieDB {
             parentJsonArray.addAll(Arrays.asList(movie.getShowTimings()));
             jsonArray.add(parentJsonArray);
             parentJsonArray = new JSONArray();
-            for (boolean[] show : movie.getSeats()) {
-                JSONArray childJsonArray = new JSONArray();
-                for (int j = 0; j<seats.length; j++) {
-                    childJsonArray.add(show[j]);
-                }
-                parentJsonArray.add(childJsonArray);
+            for (boolean[][] seatsCheck : movie.seats) {
+            JSONArray childJsonArray1 = new JSONArray();
+            for (boolean[] seat : seatsCheck) {
+                JSONArray childJsonArray2 = new JSONArray();
+                for(int k=0; k<seat.length ; k++)
+                    childJsonArray2.add(seat[k]);
+                childJsonArray1.add(childJsonArray2);
+            }
+            parentJsonArray.add(childJsonArray1);
             }
             jsonArray.add(parentJsonArray);
             parentJsonArray = new JSONArray();

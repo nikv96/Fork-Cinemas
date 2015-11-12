@@ -166,10 +166,14 @@ public class Staff extends Person{
     public void movieEdits()
     {
         String movieName;
-        int ch; int c2; int check_id;
+        String[] showTimings = null;
+        int ch; int c2; int check_id; int id;
+        char choice = 0;
+        int i=0;
         try{
             MovieDB allMovies[] = new MovieDB[movieEditObj.getId() + 1];
             movieEditObj.getMovieArray(allMovies);
+            id = allMovies[allMovies.length-1].showTimings.length - 1;
             System.out.println("Menu:\n1. Create Movie\n2. Update Movie\n3. Delete Movie\n4. Update Movie Listing\n5. Logout\t\t\t\t6. Exit");
            ch = sc.nextInt();
            
@@ -177,30 +181,30 @@ public class Staff extends Person{
            {
                case 1:
                    System.out.println("Enter Movie Name");
-                   movieEditObj.movieName = sc.nextLine();
+                   movieName = sc.nextLine();
                    System.out.println("Enter Movie Type");
-                   movieEditObj.movieType = sc.nextLine();
+                   String movieType = sc.nextLine();
                    System.out.println("Enter Show Timings");
-                   movieEditObj.showTimings[0] = sc.nextLine();
-                   System.out.println("Enter Price");
-                   movieEditObj.price = sc.nextDouble();
-                   for (int i = 0;i < 10;i++)
-                   {
-                       for(int j = 0; j < 40; j++)
-                        movieEditObj.seats[i][j] = false;
-                   }
+                   do{
+                        showTimings[i] = new String();
+                        System.out.println("Enter Date and time:");
+                        showTimings[i++] = Integer.toString(id)+sc.nextLine();
+                        System.out.println("More shows?");
+                        choice = sc.next().charAt(0);
+                   }while(choice == 'y' || choice == 'Y');
+                   movieEditObj = new MovieDB(movieName,movieType,showTimings);
                    movieEditObj.createMovie(movieEditObj);
                    break;
                case 2:
-        for (MovieDB movie : allMovies) {
-            System.out.format("%16s%16s%16s%16s", movie.getMovieName(), movie.getMovieType(), Arrays.toString(movie.getShowTimings()), movie.getPrice());
-        }
-        System.out.println("Choose your movie:");
-        ch = sc.nextInt();
-        
-        System.out.println("Menu:\n1. Change Movie Name\n2. Change Movie Type\n3. Update Show Timings\n4. Change Movie Price\n5. Logout\t\t\t\t6. Exit");
-        c2 = sc.nextInt();
-        movieEditObj.updateMovie(ch, c2);
+                    for (MovieDB movie : allMovies) {
+                        System.out.format("%16s%16s%16s%16s", movie.getMovieName(), movie.getMovieType(), Arrays.toString(movie.getShowTimings()), movie.getPrice());
+                    }
+                    System.out.println("Choose your movie:");
+                    ch = sc.nextInt();
+
+                    System.out.println("Menu:\n1. Change Movie Name\n2. Change Movie Type\n3. Update Show Timings\n4. Change Movie Price\n5. Logout\t\t\t\t6. Exit");
+                    c2 = sc.nextInt();
+                    movieEditObj.updateMovie(ch, c2);
                    break;
                case 3:
                    System.out.println("Enter Movie Name");
