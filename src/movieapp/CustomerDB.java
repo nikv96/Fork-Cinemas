@@ -131,4 +131,35 @@ public class CustomerDB {
     
     }
     
+    /*
+     * This method reads the entire customer database and stores the values in objects
+    */
+    
+    public void getCustomersArray (Customer[] customer) throws FileNotFoundException, IOException, ParseException{
+        JSONParser parser = new JSONParser();
+        int id = 0;
+        JSONObject obj1 = (JSONObject) parser.parse(new FileReader("customerData.txt"));
+        JSONArray arr,childArray;
+        int book[];
+        while (obj1.get(Integer.toString(id))!=null){
+            arr = (JSONArray) obj1.get(Integer.toString(id));
+            
+            //booked
+            childArray = new JSONArray();
+            childArray = (JSONArray)arr.get(8);
+            book = new int[childArray.size()];
+            for(int i=0;i<childArray.size();i++)
+                book[i] = (int) childArray.get(i);
+            customer[id] = new Customer((arr.get(0)).toString(),
+                    (int)arr.get(1),
+                    arr.get(2).toString(),
+                    (long) arr.get(3),
+                    (long) arr.get(4),
+                    (String) arr.get(5),
+                    (String) arr.get(6), (String) arr.get(7),
+                    book);
+            id++;
+        }
+    }
+    
 }

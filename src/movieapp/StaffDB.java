@@ -174,4 +174,24 @@ public class StaffDB {
       
     }
     
+    public void getStaffsArray (Staff[] staff) throws FileNotFoundException, IOException, ParseException{
+        JSONParser parser = new JSONParser();
+        int id = 0;
+        JSONObject obj1 = (JSONObject) parser.parse(new FileReader("customerData.txt"));
+        JSONArray arr;
+        while (obj1.get(Integer.toString(id))!=null){
+            arr = (JSONArray) obj1.get(Integer.toString(id));
+            
+            staff[id] = new Staff((arr.get(0)).toString(),
+                    (int)arr.get(1),
+                    arr.get(2).toString(),
+                    (long) arr.get(3),
+                    (long) arr.get(4),
+                    (String) arr.get(5),
+                    (String) arr.get(6), (String) arr.get(7),
+                    (String) arr.get(8));
+            id++;
+        }
+    }
+    
 }

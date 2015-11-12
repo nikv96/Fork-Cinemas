@@ -24,6 +24,21 @@ public class Staff extends Person{
     
     MovieList listEdit = new MovieList();
     
+    public Staff(){
+    }
+    
+    public Staff(String name, int age, String emailid, long phno, long postal, String gender, String user, String pass, String cineplex) {
+        this.name = name;
+        this.age = age;
+        this.emailID = emailid;
+        this.phone = phno;
+        this.postalCode = postal;
+        this.gender = gender;
+        this.username = user;
+        this.password = pass;
+        this.cineplex = cineplex;
+    }
+    
     @Override
     public void login()
     {

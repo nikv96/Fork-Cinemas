@@ -22,6 +22,21 @@ public class Customer extends Person {
     
     private Customer cObject[] = new Customer[10];
     
+    Customer(){
+    }
+
+    Customer(String name, int age, String emailid, long phno, long postal, String gender, String user, String pass, int[] book) {
+        this.name = name;
+        this.age = age;
+        this.emailID = emailid;
+        this.phone = phno;
+        this.postalCode = postal;
+        this.gender = gender;
+        this.username = user;
+        this.password = pass;
+        this.booked = book;
+    }
+    
     @Override
     public void login (){
         try{
