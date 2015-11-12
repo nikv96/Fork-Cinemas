@@ -1,6 +1,9 @@
 package movieapp;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
@@ -18,14 +21,14 @@ public class Customer extends Person {
     
     protected int id;
     
-    protected int booked[] = new int[10];
+    protected boolean booked[];
     
     private Customer cObject[] = new Customer[10];
     
-    Customer(){
+    public Customer(){
     }
 
-    Customer(String name, int age, String emailid, long phno, long postal, String gender, String user, String pass, int[] book) {
+    public Customer(String name, int age, String emailid, long phno, long postal, String gender, String user, String pass, boolean[] book) {
         this.name = name;
         this.age = age;
         this.emailID = emailid;
@@ -81,7 +84,7 @@ public class Customer extends Person {
         c.emailID = emailID;
         c.phone = phone;
         c.postalCode = postalCode;
-        c.booked = new int[]{0,0,0,0,0,0,0,0,0,0};
+        c.booked = new boolean[]{false,false,false,false,false,false,false,false};
         
         try{
             cObject[total_id] = c;
@@ -94,8 +97,13 @@ public class Customer extends Person {
     }
     
     @Override
-    public void displayMenu()
+    public void displayMenu() throws IOException, FileNotFoundException
     {
+        try {
+            CustomerDB.getCustomersArray(cObject);
+        } catch (ParseException ex) {
+            Logger.getLogger(Customer.class.getName()).log(Level.SEVERE, null, ex);
+        }
         MovieMenu menu = new MovieMenu();
         MovieDB movies[] = new MovieDB[1];
         MovieDB menuObj = new MovieDB();
@@ -109,7 +117,7 @@ public class Customer extends Person {
         
     }
     
-    public int[] getBookingHistory(Customer cObject)
+    public boolean[] getBookingHistory(Customer cObject)
     {
         return cObject.booked;
     }

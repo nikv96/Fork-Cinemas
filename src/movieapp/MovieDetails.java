@@ -80,9 +80,9 @@ public class MovieDetails {
     public void booking(MovieDB movie, int row, int column, int id, Customer cObject)
     {
         System.out.println("Please enter your 16 digit credit card number: ");
-        c.readPassword();
+        sc.next();
         System.out.println("Please enter your 3 digit CVV number: ");
-        c.readPassword();
+        sc.next();
         movie.setSeat(id, row, column);
         cust.setBooking(cObject, movie.getId());
         System.out.println("Payment Successful. Your ticket number is " + movie.getId() + (int)Math.random()*1000000 + "\nThank You.");

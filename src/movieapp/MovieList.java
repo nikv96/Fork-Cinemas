@@ -13,7 +13,7 @@ public class MovieList {
     
     Scanner sc = new Scanner(System.in);
     
-    protected MovieDetails movieChoice;
+    protected MovieDetails movieChoice = new MovieDetails();
     
     /*
     * This method lists all the the movies in a table
@@ -92,10 +92,10 @@ public class MovieList {
     */
     public void viewBookingHistory(MovieDB movieList[], Customer cObject){
         int count = 1;
-        int bookHistory[];
+        boolean bookHistory[];
         bookHistory = cObject.getBookingHistory(cObject);
         for (int i = 0; i < movieList.length;i++) {
-            if (bookHistory[i] == 1) {
+            if (bookHistory[i] == true) {
                 movies[count - 1] = movieList[i];
                 System.out.format("%16s%16s%16s%16s%16s", count++, movieList[i].getMovieName(), movieList[i].getMovieType(), Arrays.toString(movieList[i].getShowTimings()), movieList[i].getPrice());
             }
