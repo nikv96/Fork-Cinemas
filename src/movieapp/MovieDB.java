@@ -38,8 +38,16 @@ public class MovieDB {
     
     protected MovieDB allMovies[];
     
+    /*
+    * Default constructor
+    */
+    
     public MovieDB(){
     }
+    
+    /*
+    * Constructor to initialize the movie name, type and show timings
+    */
     
     public MovieDB(String movieName, String movieType, String[] showTimings){
         this.movieName = movieName;
@@ -55,6 +63,10 @@ public class MovieDB {
         this.rating = null;
         
     }
+    
+    /*
+    * Constructor to initialize all attributes except seat of movie
+    */
     public MovieDB(String movieName, String movieType, String[] showTimings,
             double price, String[] reviews, double[] rating){
         this.movieName = movieName;
@@ -70,6 +82,10 @@ public class MovieDB {
         this.rating = rating;
     }
     
+    /*
+    * Constructor to initialize all attributes
+    */
+    
     public MovieDB(String movieName, String movieType, String[] showTimings,
             boolean[][][] seats, double price,String[] reviews, double[] rating){
         this.movieName = movieName;
@@ -80,6 +96,8 @@ public class MovieDB {
         this.reviews = reviews;
         this.rating = rating;
     }
+    
+    //getter and setter methods
     
     public int getTotalId(){
         return total_id;
@@ -343,5 +361,22 @@ public class MovieDB {
         try (FileWriter file = new FileWriter("movieData.txt")) {
                file.write(obj.toJSONString());
 	}
+    }
+    
+    public double calcPrice(String cineType, Customer cObj){
+        double finalPrice = 0.0;
+        finalPrice = this.getPrice();
+        
+        if(cObj.getAge() >= 60)
+        {
+            finalPrice = finalPrice * 0.94;
+        }
+        if(this.getMovieType().equals("3D"))
+        {
+            finalPrice = finalPrice * 1.05;
+        }
+        if(cineType.equals("Platinum"))
+            return finalPrice*1.10;
+        return finalPrice;
     }
 }

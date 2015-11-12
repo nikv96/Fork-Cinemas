@@ -14,9 +14,13 @@ public class MovieDetails {
     
     CustomerDB cust = new CustomerDB();
     
+    /*
+    * This method gets the movie details
+    */
+    
     public void getMovieDetails(MovieDB movie, Customer cObj)
     {
-        int ch = 0; double finalPrice = 0.0;
+        int ch = 0; 
         char choice;
         System.out.println(movie.getMovieName());
         System.out.println("Movie Type: " + movie.getMovieType());
@@ -24,20 +28,9 @@ public class MovieDetails {
         for (String showTiming : movie.getShowTimings()) {
             System.out.print(showTiming + "\t");
         }
-        finalPrice = movie.getPrice();
-        
-        if(cObj.getAge() >= 60)
-        {
-            finalPrice = finalPrice * 0.94;
-        }
-        if(movie.getMovieType().equals("3D"))
-        {
-            finalPrice = finalPrice * 1.05;
-        }
-        
             
-        System.out.println("Deluxe Price: " + finalPrice);
-        System.out.println("Platinum Price: " + finalPrice*1.10);
+        System.out.println("Deluxe Price: " + movie.calcPrice("Deluxe",cObj));
+        System.out.println("Platinum Price: " + movie.calcPrice("Platinum", cObj));
         float sum = 0;
         for (int i=0;i<movie.getRating().length;i++) {
             sum += movie.getRating()[i];
@@ -77,24 +70,34 @@ public class MovieDetails {
         }while ( ch!=3 );
     }
     
+    /*
+    * This method books the seat
+    */
+    
     public void booking(MovieDB movie, int row, int column, int id, Customer cObject)
     {
         System.out.println("Please enter your 16 digit credit card number: ");
-        sc.next();
+        sc.nextLine();
         System.out.println("Please enter your 3 digit CVV number: ");
-        sc.next();
+        sc.nextLine();
         movie.setSeat(id, row, column);
         cust.setBooking(cObject, movie.getId());
         System.out.println("Payment Successful. Your ticket number is " + movie.getId() + (int)Math.random()*1000000 + "\nThank You.");
     }
     
+    /*
+    * This method adds a new review
+    */
+    
     public void addReview(MovieDB movie, Customer cObj){
         System.out.println("Your review here");
-        String review = sc.next();
-        //write code to get customer's username here
+        String review = sc.nextLine();
         movie.setReview("@" + cObj.getUserName() + "," + review);
     }
     
+    /*
+    * This methods displays seats availability
+    */
     public void checkSeatAvailability(MovieDB movie, int id){
         int i;
         boolean[][][] allSeats = movie.getSeats();
@@ -103,9 +106,9 @@ public class MovieDetails {
             System.out.print("\n");
             for (i =0;i < seat.length;i++){
                 if(seat[i]==true){
-                    System.out.print("1 ");
+                    System.out.print("1\t");
                 } else {
-                    System.out.print("x");
+                    System.out.print("x\t");
                 }
             }
         }

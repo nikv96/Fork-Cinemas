@@ -25,8 +25,16 @@ public class Customer extends Person {
     
     private Customer cObject[] = new Customer[10];
     
+    /*
+    * This is a default constructor
+    */
+    
     public Customer(){
     }
+    
+    /*
+    * This constructor is to initialize all values of Customer
+    */
 
     public Customer(String name, int age, String emailid, long phno, long postal, String gender, String user, String pass, boolean[] book) {
         this.name = name;
@@ -39,6 +47,10 @@ public class Customer extends Person {
         this.password = pass;
         this.booked = book;
     }
+    
+    /*
+    * This method logs in the customer
+    */
     
     @Override
     public void login (){
@@ -69,7 +81,10 @@ public class Customer extends Person {
         }
         
     }
-        
+    
+    /*
+    * This method signs up the customer
+    */
     
     @Override
     public void signup (){
@@ -96,6 +111,10 @@ public class Customer extends Person {
                 
     }
     
+    /*
+    * This method displays meny for customer
+    */
+    
     @Override
     public void displayMenu() throws IOException, FileNotFoundException
     {
@@ -116,6 +135,10 @@ public class Customer extends Person {
         }
         
     }
+    
+    /*
+    * This method displays booking history for customer
+    */
     
     public boolean[] getBookingHistory(Customer cObject)
     {

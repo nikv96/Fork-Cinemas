@@ -16,7 +16,7 @@ public class MovieList {
     protected MovieDetails movieChoice = new MovieDetails();
     
     /*
-    * This method lists all the the movies in a table
+    * This method lists all the the movies in a tablee
     */
     public void listAllMovies(MovieDB movieList[], Customer cObj){
         movies = movieList;

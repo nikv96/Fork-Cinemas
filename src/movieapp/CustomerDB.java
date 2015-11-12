@@ -17,6 +17,7 @@ import org.json.simple.parser.ParseException;
  */
 public class CustomerDB {
     
+    //Getter and Setter methods
     public String getName(Customer c)
     {
         return c.name;
@@ -57,6 +58,9 @@ public class CustomerDB {
         c.age = age;
     }
     
+    /*
+    * This method checks username and password against the one in the database
+    */
     
     public static boolean checkUser(String user, String pwd) throws IOException, ParseException
     {
@@ -78,6 +82,10 @@ public class CustomerDB {
         }
         return present;
     }
+    
+    /*
+    * This method adds a new customer to the database
+    */
     
     public static JSONObject addCustomer(Customer c) throws IOException, FileNotFoundException, ParseException{
       //basic writing code
@@ -104,6 +112,10 @@ public class CustomerDB {
       
       return obj;
     }
+    
+    /*
+    * This method helps modify customer data
+    */
     
     public static int configUser(String user) throws IOException, FileNotFoundException, ParseException{
     //looks for the appropriate username and returns if existing, allowing access to that customer's details

@@ -11,14 +11,13 @@ import org.json.simple.parser.ParseException;
  * @author Team Fork
  */
 public class MovieApp {
+    
+    /*
+    * Main method
+    */
 
     public static void main(String[] args)
     {
-        
-        //call movie create multiple times
-        //String movieName, String movieType, String[] showTimings,
-           // double price, String[] reviews, double[] rating
-       
       
         String[] showTimings = {"Wednesday 3:00 pm", "Wednesday 5:30 pm"};
         String[] reviews = {"@nikv96, Huge Fan"};
@@ -49,11 +48,7 @@ public class MovieApp {
         {
             e.getMessage();
         }
-        
-       
-       
-       
-        
+
         
     }
     

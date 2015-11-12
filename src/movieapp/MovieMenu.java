@@ -27,7 +27,7 @@ public class MovieMenu {
                     + "5. View Booking History\nEnter your choice");
             menuCChoice = sc.nextInt();
             switch(menuCChoice){
-                case 1: //List all
+                case 1: //List alls
                     movieList.listAllMovies(movies, customer);
                     break;
                 case 2: //Search by name

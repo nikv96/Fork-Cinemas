@@ -32,6 +32,8 @@ public class Person {
     Scanner sc = new Scanner(System.in);
     Console c = System.console();
     
+    //getter and setters
+    
     public String getUserName(){
         return username;
     }
@@ -56,6 +58,10 @@ public class Person {
         return phone;
     }
     
+    /*
+    * Super login
+    */
+    
     public void login() {
         System.out.println("Username: ");
         username = sc.next();
@@ -63,6 +69,9 @@ public class Person {
         password = sc.next();
     }
     
+    /*
+    * Super sign up
+    */
     public void signup() {
         int flag = 0;
         System.out.println("Username: ");
@@ -92,6 +101,10 @@ public class Person {
         gender = sc.next();
     }
     
+    /*
+    * Super check type
+    */
+    
     public void checkType ()
     {
         
@@ -111,6 +124,10 @@ public class Person {
         System.out.println("End of checkType\n");
         
     }
+    
+    /*
+    * Abstract displayMenu
+    */
     
     public void displayMenu() throws IOException
     {
