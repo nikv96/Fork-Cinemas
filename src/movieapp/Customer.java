@@ -14,7 +14,9 @@ public class Customer extends Person {
     
     static JSONObject custJSON[] = new JSONObject[10];
   
-    static int id = 0;
+    static int total_id = 0;
+    
+    protected int id;
     
     protected int booked[] = new int[10];
     
@@ -55,7 +57,7 @@ public class Customer extends Person {
     public void signup (){
         super.signup();
         Customer c = new Customer();
-        c.id++;
+        c.id = total_id++;
         c.name = name;
         c.username = username;
         c.password = password;
@@ -67,8 +69,8 @@ public class Customer extends Person {
         c.booked = new int[]{0,0,0,0,0,0,0,0,0,0};
         
         try{
-            cObject[id] = c;
-            custJSON[id] = custObj[id].addCustomer(c);
+            cObject[total_id] = c;
+            custJSON[total_id] = CustomerDB.addCustomer(c);
         } catch(IOException | ParseException e)
         {
             e.getMessage();
@@ -79,16 +81,17 @@ public class Customer extends Person {
     @Override
     public void displayMenu()
     {
-        int choice;
-        choice = sc.nextInt();
-        System.out.println("Menu:\n1. List All Movies\n2. Search by name5"
-                + "\n3. Search by type\n4. Top 5 by rating\n"
-                + "5. Logout\t\t\t\t6. Exit");
-        switch(choice)
+        MovieMenu menu = new MovieMenu();
+        MovieDB movies[] = new MovieDB[10];
+        MovieDB menuObj = new MovieDB();
+        try{
+            menuObj.getMovieArray(movies);
+            menu.customerMenu(movies, cObject[total_id - 1]);
+        } catch(IOException | ParseException e)
         {
-            case 1: 
-                break; // cases shall be added as and when the code is implemented
+            e.getMessage();
         }
+        
     }
     
     public int[] getBookingHistory(Customer cObject)

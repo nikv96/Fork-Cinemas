@@ -2,13 +2,14 @@ package movieapp;
 
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
  *
  * @author Team Fork
  */
-public abstract class Person {
+public class Person {
     
     protected String username;
     
@@ -29,6 +30,7 @@ public abstract class Person {
     protected char type;
     
     Scanner sc = new Scanner(System.in);
+    Console c = System.console();
     
     public String getUserName(){
         return username;
@@ -67,7 +69,7 @@ public abstract class Person {
         username = sc.next();
         System.out.println("Password: ");
         password = sc.next();
-        System.out.println("Name: ");
+        System.out.println("Last Name: ");
         name = sc.next();
         System.out.println("Age: ");
         age = sc.nextInt();
@@ -106,8 +108,13 @@ public abstract class Person {
             sObj.login();
         }
         
+        System.out.println("End of checkType\n");
+        
     }
     
-    public abstract void displayMenu() throws IOException;
+    public void displayMenu() throws IOException
+    {
+        
+    }
     
 }

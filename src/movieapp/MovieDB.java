@@ -18,21 +18,25 @@ import org.json.simple.parser.ParseException;
  */
 public class MovieDB {
     
-    private String movieName;
+    protected String movieName;
     
-    private String movieType;
+    protected String movieType;
     
-    private String[] showTimings;
+    protected String[] showTimings;
     
-    private boolean[][] seats;
+    protected boolean[][] seats;
     
-    private double price;
+    protected double price;
     
-    private String[] reviews;
+    protected String[] reviews;
     
-    private double[] rating;
+    protected double[] rating;
             
-    private static int id = 1;
+    private static int total_id = 0;
+    
+    private int id;
+    
+    protected MovieDB allMovies[];
     
     public MovieDB(){
     }
@@ -67,31 +71,31 @@ public class MovieDB {
     }
     
     public String getMovieType(){
-        return movieType;
+        return this.movieType;
     }
     
     public String[] getShowTimings(){
-        return showTimings;
+        return this.showTimings;
     }
     
     public boolean[][] getSeats(){
-        return seats;
+        return this.seats;
     }
     
     public double getPrice(){
-        return price;
+        return this.price;
     }
     
     public int getId(){
-        return id;
+        return this.id;
     }
     
     public String[] getReviews(){
-        return reviews;
+        return this.reviews;
     }
     
     public double[] getRating(){
-        return rating;
+        return this.rating;
     }
     
     public double getRatingAverage()
@@ -148,7 +152,7 @@ public class MovieDB {
       for(int i=0; i<rating.length; i++)
           parentJsonArray.add(rating[i]);
       jsonArray.add(parentJsonArray);
-      obj.put(movie.id++, jsonArray);
+      obj.put(total_id++, jsonArray);
       try (FileWriter file = new FileWriter("movieData.txt")) 
       {
                file.write(obj.toJSONString());
@@ -159,12 +163,14 @@ public class MovieDB {
     */
     
     public void deleteMovie (String movieName) throws ParseException, IOException{
+        int i = 0;
       JSONParser parser = new JSONParser();
       JSONObject obj1 = (JSONObject) parser.parse(new FileReader("movieData.txt"));
-      while (obj1.get(id)!=null){
-          if (movieName == ((JSONArray)obj1.get(id)).get(0)){
-              obj1.remove(id);
+      while (obj1.get(i)!=null){
+          if (movieName == ((JSONArray)obj1.get(i)).get(0)){
+              obj1.remove(i);
           }
+          i++;
       }
       try (FileWriter file = new FileWriter("movieData.txt")) {
             file.write(obj1.toJSONString());

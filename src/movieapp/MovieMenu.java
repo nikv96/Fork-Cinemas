@@ -28,18 +28,18 @@ public class MovieMenu {
             menuCChoice = sc.nextInt();
             switch(menuCChoice){
                 case 1: //List all
-                    movieList.listAllMovies(movies);
+                    movieList.listAllMovies(movies, customer);
                     break;
                 case 2: //Search by name
                     System.out.println("Enter a movie name: ");
-                    movieList.listSearchByName(movies, sc.next());
+                    movieList.listSearchByName(movies, sc.next(), customer);
                     break;
                 case 3: //Search by something else
                     System.out.println("Enter a movie type: ");
-                    movieList.listSearchByType(movies, sc.next());
+                    movieList.listSearchByType(movies, sc.next(), customer);
                     break;
                 case 4: //Top 5
-                    movieList.listTop5(movies);
+                    movieList.listTop5(movies, customer);
                     break;
                 case 5: //View Booking History
                     movieList.viewBookingHistory(movies, customer);
@@ -52,7 +52,7 @@ public class MovieMenu {
                     exit(0);
                     break;
             }
-        } while (menuCChoice!=6);
+        } while (menuCChoice<6);
     }
     
     /*

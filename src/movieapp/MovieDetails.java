@@ -12,7 +12,9 @@ public class MovieDetails {
     Scanner sc = new Scanner(System.in);
     Console c = System.console();
     
-    public void getMovieDetails(MovieDB movie){
+    CustomerDB cust = new CustomerDB();
+    
+    public void getMovieDetails(MovieDB movie, Customer cObj){
         int ch = 0;
         char choice;
         System.out.println(movie.getMovieName());
@@ -47,7 +49,7 @@ public class MovieDetails {
                 choice = sc.next().charAt(0);
                 if (choice == 'Y'){
                     System.out.println("Enter seat number(Row -- Column): ");
-                    booking(movie, sc.nextInt(), sc.nextInt());
+                    booking(movie, sc.nextInt(), sc.nextInt(), cObj);
                 }
                 break;
             case 3:
@@ -55,19 +57,20 @@ public class MovieDetails {
                 break;
         }
         }while ( ch!=3 );
-        return;
     }
     
-    public void booking(MovieDB movie, int row, int column){
+    public void booking(MovieDB movie, int row, int column, Customer cObject){
         System.out.println("Please enter your 16 digit credit card number: ");
         c.readPassword();
         System.out.println("Please enter your 3 digit CVV number: ");
         c.readPassword();
         movie.setSeat(row, column);
+        cust.setBooking(cObject, movie.getId());
+        System.out.println("Payment Successful. Your ticket number is " + movie.getId());
     }
     
     public void addReview(MovieDB movie){
-        System.out.println("What the fk do you want to say muthafucker?");
+        System.out.println("Your review here");
         String review = sc.next();
         //write code to get customer's username here
         movie.setReview(review);

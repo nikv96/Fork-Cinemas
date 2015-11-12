@@ -1,5 +1,6 @@
 package movieapp;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -16,10 +17,55 @@ import org.json.simple.parser.ParseException;
  */
 public class CustomerDB {
     
+    public String getName(Customer c)
+    {
+        return c.name;
+    }
+    
+    public String getPassword(Customer c)
+    {
+        return c.password;
+    }
+    
+    public String getEmailID(Customer c)
+    {
+        return c.emailID;
+    }
+    
+    public void setUsername(Customer c, String user)
+    {
+        c.username = user;
+    }
+    
+    public void setPassword(Customer c, String pass)
+    {
+        c.password = pass;
+    }
+    
+    public void setEmailID(Customer c, String email)
+    {
+        c.emailID = email;
+    }
+    
+    public void setBooking(Customer c, int id)
+    {
+        c.booked[id] = 1;
+    }
+    
+    public void setAge(Customer c, int age)
+    {
+        c.age = age;
+    }
+    
+    
     public static boolean checkUser(String user, String pwd) throws IOException, FileNotFoundException, ParseException
     {
         JSONParser parser = new JSONParser();
-        JSONObject objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
+        JSONObject objFull = new JSONObject();
+      File f = new File("customerData.txt");
+      if(f.exists()) { 
+          objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
+      }
         JSONArray arrRow;
         boolean present = false;
         
@@ -34,7 +80,7 @@ public class CustomerDB {
         return present;
     }
     
-    public JSONObject addCustomer(Customer c) throws IOException, FileNotFoundException, ParseException{
+    public static JSONObject addCustomer(Customer c) throws IOException, FileNotFoundException, ParseException{
       //basic writing code
       JSONObject obj = new JSONObject();
       JSONArray arr = new JSONArray();
@@ -56,11 +102,15 @@ public class CustomerDB {
       return obj;
     }
     
-    public static boolean configUser(String user) throws IOException, FileNotFoundException, ParseException{
+    public static int configUser(String user) throws IOException, FileNotFoundException, ParseException{
     //looks for the appropriate username and returns if existing, allowing access to that customer's details
         
         JSONParser parser = new JSONParser();
-        JSONObject objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
+        JSONObject objFull = new JSONObject();
+      File f = new File("customerData.txt");
+      if(f.exists()) { 
+          objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
+      }
         JSONArray arrRow;
         boolean present = false;
         
@@ -70,10 +120,11 @@ public class CustomerDB {
             if (user.equals(arrRow.get(6)))
             {
                     present = true;
+                    return i;
             }
         }
         
-        return present;
+        return -1;
     
     }
     

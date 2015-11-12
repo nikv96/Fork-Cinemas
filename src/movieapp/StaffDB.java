@@ -1,6 +1,7 @@
 package movieapp;
 
 import java.io.*;
+import java.util.Scanner;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -11,18 +12,77 @@ import org.json.simple.parser.ParseException;
  */
 public class StaffDB {
     
+    public String getName(Staff s)
+    {
+        return s.name;
+    }
+    
+    public String getPassword(Staff s)
+    {
+        return s.password;
+    }
+    
+    public String getEmailID(Staff s)
+    {
+        return s.emailID;
+    }
+    
+    public String getCineplex(Staff s)
+    {
+        return s.cineplex;
+    }
+    
+    public void setUsername(Staff s, String user) throws IOException, FileNotFoundException, ParseException
+    {
+        s.username = user;
+        JSONParser parser = new JSONParser();
+        JSONObject objFull = new JSONObject();
+      File f = new File("staffData.txt");
+      if(f.exists()) {
+          objFull = (JSONObject) parser.parse(new FileReader("staffData.txt"));
+      }
+      
+    }
+    
+    public void setPassword(Staff s, String pass)
+    {
+        s.password = pass;
+    }
+    
+    public void setEmailID(Staff s, String email)
+    {
+        s.emailID = email;
+    }
+    
+    public void setGender(Staff s, char gender)
+    {
+        s.gender = gender;
+    }
+    
+    public void setAge(Staff s, int age)
+    {
+        s.age = age;
+    }
+    
+    
+    
     public static boolean readStaff(String user, String pwd) throws IOException, FileNotFoundException, ParseException{
     //returns boolean to check for authentication
+        System.out.println("checking..");
         JSONParser parser = new JSONParser();
-        JSONObject objFull = (JSONObject) parser.parse(new FileReader("staffData.txt"));
+        JSONObject objFull = new JSONObject();
+      File f = new File("staffData.txt");
+      if(f.exists()) { 
+          objFull = (JSONObject) parser.parse(new FileReader("staffData.txt"));
+      }
         JSONArray arrRow;
         boolean present = false;
-        
+       System.out.println("checking2..");
         for ( int i = 0; i<objFull.size();i++){
             arrRow = (JSONArray) objFull.get(i);
-            if (user.equals(arrRow.get(6)))
+            if (user.equals(arrRow.get(6).toString()))
             {
-                if (pwd.equals(arrRow.get(7)))
+                if (pwd.equals(arrRow.get(7).toString()))
                     present = true;
             }
         }
@@ -30,7 +90,7 @@ public class StaffDB {
         return present;
 }
     
-    public JSONObject addStaff(Staff s) throws IOException, FileNotFoundException, ParseException{
+    public static JSONObject addStaff(Staff s) throws IOException, FileNotFoundException, ParseException{
       //adds staff record to the .dat file
       //basic writing code
      JSONObject obj = new JSONObject();
@@ -44,7 +104,7 @@ public class StaffDB {
       arr.add(s.username);//6
       arr.add(s.password);//7
       arr.add(s.cineplex);//8
-      obj.put(s.id,arr);
+      obj.put(Staff.id,arr);
       try (FileWriter file = new FileWriter("staffData.txt"))
       {
 		file.write(obj.toJSONString());
@@ -54,7 +114,7 @@ public class StaffDB {
        
     }
     
-    public static boolean configUser(String user) throws IOException, FileNotFoundException, ParseException{
+    public static int configUser(String user) throws IOException, FileNotFoundException, ParseException{
     //looks for the appropriate username and returns if existing, allowing access to that customer's details
         
         JSONParser parser = new JSONParser();
@@ -68,11 +128,50 @@ public class StaffDB {
             if (user.equals(arrRow.get(6)))
             {
                     present = true;
+                    return i;
             }
         }
         
-        return present;
+        return -1;
     
+    }
+    
+    public void updateUser (int id, int edit) throws IOException, ParseException {
+      JSONParser parser = new JSONParser();
+      Scanner sc = new Scanner (System.in);
+      JSONObject obj = (JSONObject) parser.parse(new FileReader("staffData.txt"));
+      JSONArray arr = (JSONArray) obj.get(id);
+      arr.remove(edit - 1);
+      switch (edit){
+          /* 1.  Username
+           * 2. Password
+           * 3. email ID
+           * 4. Cineplex
+           */
+          case 1:
+              System.out.println("Please enter the new username:");
+              arr.add(6, sc.next()); 
+              break;
+          case 2:
+              System.out.println("Please enter the new password:");
+              arr.add(7, sc.next()); 
+              break; 
+          case 3:
+              System.out.println("Please enter the new email ID:");
+              arr.add(2, sc.nextFloat()); 
+              break;
+          case 4:
+              System.out.println("Please enter the new cineplex:");
+              arr.add(8, sc.nextFloat()); 
+              break;
+          default:
+              break;
+      }
+      try (FileWriter file = new FileWriter("staffData.txt")) {
+		file.write(obj.toJSONString());
+	}
+      
+      
     }
     
 }
