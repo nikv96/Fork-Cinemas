@@ -18,7 +18,7 @@ import org.json.simple.parser.ParseException;
 public class CustomerDB {
     
     public void setBooking(Customer c, int id, int slot) throws IOException, ParseException{
-        c.booked[id] = slot;
+        c.booked[id] = slot + 1;
         System.out.println(""+c.booked[id]);
         //write back to file later
         JSONParser parser = new JSONParser();

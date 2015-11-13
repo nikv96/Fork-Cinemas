@@ -62,7 +62,6 @@ public class Staff extends Person{
             }
                 
         } while (flag !=true);
-        System.out.println("Login successful!");
         displayMenu();
         }
         catch(IOException | ParseException e){
@@ -178,9 +177,9 @@ public class Staff extends Person{
         int i=0;
         try{
             do{
-            System.out.print("\n\t\t1. Create Movie"
-                    + "\n\t\t2. Update Movie\n"
-                    + "\n\t\t4. Update Movie Listing"
+            System.out.print("\n1. Create Movie"
+                    + "\n2. Update Movie"
+                    + "\n3. Update Movie Listing"
                     + "\n[5] Logout\t\t\t\t[6] Exit\nPlease enter your choice: ");
            ch = sc.nextInt();
            
@@ -222,7 +221,7 @@ public class Staff extends Person{
                    
                    System.out.print("Enter Expert Review: ");
                    String[] review = new String[1];
-                   review[0] = sc.nextLine();
+                   review[0] = sc.nextLine() + sc.nextLine();
                    
                    System.out.print("Enter Expert Rating(out of 5): ");
                    double[] rating = new double[1];
@@ -247,13 +246,16 @@ public class Staff extends Person{
                case 2:
                     System.out.format("\t%4s%16s%16s%50s\n", "#", "Movie Name", "Movie Type","Show Timings");
                     System.out.println("\t-------------------------------------------------------------------------------------------------");
+                    int j = 1;
                     for (MovieDB movie : allMovies) {
                         String s = new String();
+                        
                         for(i=0;i<movie.getShowTimings().length;i++)
                             s += " " + (movie.getShowTimings())[i];
-                        i=1;
-                        System.out.format("\t%4d%16s%16s%56s\n", i++,
+                        
+                        System.out.format("\t%4d%16s%16s%56s\n", j,
                                 movie.getMovieName(), movie.getMovieType(),s);
+                        j = j+1;
                     }
                     System.out.print("\nChoose your movie(Enter serial number): ");
                     ch = sc.nextInt();
@@ -261,7 +263,8 @@ public class Staff extends Person{
                     System.out.print("\n\t\t1. Change Movie Name\n"
                             + "\t\t2. Change Movie Type\n"
                             + "\t\t3. Update Show Timings\n"
-                            + "[4] Logout\t\t\t\t[7] Exit\n"
+                            + "\t\t4. Configure Showing Status\n"
+                            + "[5] Logout\t\t\t\t[6] Exit\n"
                             + "Enter your choice: ");
                     c2 = sc.nextInt();
                     movieEditObj.updateMovie(ch-1, c2);

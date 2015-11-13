@@ -246,23 +246,28 @@ public class MovieDB {
         int i = 0;
       JSONParser parser = new JSONParser();
       JSONObject obj1 = (JSONObject) parser.parse(new FileReader("movieData.txt"));
+      JSONArray jarr = new JSONArray();
+      String s = new String();
       while (obj1.get(Integer.toString(i))!=null){
           if(movieName.equals( ((JSONArray)obj1.get(Integer.toString(i))).get(0).toString() ))
           {
-              obj1.remove(Integer.toString(i));
-              total_id--;
+              jarr = (JSONArray)obj1.get(Integer.toString(i));
+              s = jarr.get(10).toString();
+              jarr.remove(10);
+              jarr.remove(9);
+              jarr.add("End Of Showing");
+              jarr.add(s);
               break;
           }
           i++;
       }
       
+      obj1.replace(Integer.toString(i), jarr);
+      
       try (FileWriter file = new FileWriter("movieData.txt")) {
 	file.write(obj1.toJSONString());
       }
       
-      MovieDB[] movies = new MovieDB[total_id];
-      movies = this.getMovieArray(movies,i);
-      this.updateMovieListings(movies);
     }
     
     /*
@@ -309,11 +314,9 @@ public class MovieDB {
               temp_status = sc.nextLine();
               if(temp_status.equalsIgnoreCase("End of Showing")){
                     System.out.println("Enter Movie Name to confirm: ");
-                    name = sc.nextLine();
-                    if(this.getMovieName().equals(name))
-                        this.deleteMovie(name);
-                    else
-                        System.out.println("Movie not deleted!");
+                    
+                        deleteMovie(sc.nextLine() + sc.nextLine());
+                        return;
               }
               else{
                   arr.remove(9);

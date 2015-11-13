@@ -123,7 +123,7 @@ public class Person {
     
     public void signup() {
         int flag = 0;
-        System.out.println("Staff - Signup\n");
+        System.out.println("Signup\n");
         System.out.print("\nUsername: ");
         username = sc.next();
         System.out.print("\nPassword: ");

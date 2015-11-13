@@ -125,9 +125,9 @@ public class MovieList {
                 movies[count - 1] = movieList[i];
                 for(int j = 0; j < movieList[i].getShowTimings().length;j++)
                 {
-                    if(bookHistory[i] == movieList[i].getShowTimings()[j].charAt(0))
-                System.out.format("%16s%16s%16s%16s", count++, movieList[i].getMovieName(), 
-                        movieList[i].getMovieType(), movieList[i].getShowTimings()[j].substring(1));
+                    if(bookHistory[i]-1 == j)
+                System.out.println( ""+ count++ +"\t" +  movieList[i].getMovieName() + "\t" +
+                        movieList[i].getMovieType() + "\t" + movieList[i].getShowTimings()[j].substring(1));
                 }
             }
         }
