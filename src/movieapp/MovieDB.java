@@ -49,7 +49,9 @@ public class MovieDB {
     public MovieDB(){
     }
     
-    public MovieDB(String movieName, String movieType, String[] showTimings, String[] review, double[] rating, String director, String synopsis, String showStatus, String cast){
+    public MovieDB(String movieName, String movieType, String[] showTimings, 
+            String[] review, double[] rating, String director, String synopsis, 
+            String showStatus, String cast){
         this.movieName = movieName;
         this.movieType = movieType;
         this.showTimings = showTimings;
@@ -66,23 +68,10 @@ public class MovieDB {
         this.synopsis = synopsis;
         this.cast = cast;
     }
-    public MovieDB(String movieName, String movieType, String[] showTimings,
-            double price, String[] reviews, double[] rating){
-        this.movieName = movieName;
-        this.movieType = movieType;
-        this.price = price;
-        this.showTimings = showTimings;
-        this.seats = new boolean[10][40][10];
-        for(int i =0;i<10;i++)
-            for(int j=0;j<40;j++)
-                for(int k=0;k<10;k++)
-                    this.seats[i][j][k]=false;
-        this.reviews = reviews;
-        this.rating = rating;
-    }
     
     public MovieDB(String movieName, String movieType, String[] showTimings,
-            boolean[][][] seats, double price,String[] reviews, double[] rating,String director, String synopsis, String showStatus, String cast){
+            boolean[][][] seats, double price,String[] reviews, 
+            double[] rating,String director, String synopsis, String showStatus, String cast){
         this.movieName = movieName;
         this.movieType = movieType;
         this.price = price;
@@ -90,6 +79,10 @@ public class MovieDB {
         this.seats = seats;
         this.reviews = reviews;
         this.rating = rating;
+        this.director = director;
+        this.showStatus = showStatus;
+        this.synopsis = synopsis;
+        this.cast = cast;
     }
     
     public int getTotalId(){
@@ -151,12 +144,17 @@ public class MovieDB {
         return this.showStatus;
     }
     
+    public String getShowTiming(int id){
+        String[] s = this.getShowTimings();
+        return s[id];
+    }
+    
     public void setShowStatus(String status){
         this.showStatus = status;
     }
     
-    public void setSeat(int row, int column, int showId){
-        this.seats[row][column][showId] = true;
+    public void setSeat(int showId, int column, int row){
+        this.seats[showId][column][row] = true;
     }
     
     public void setReview(String review) {
@@ -211,8 +209,7 @@ public class MovieDB {
         }
       jsonArray.add(parentJsonArray);
       jsonArray.add(movie.price);
-      if(movie.reviews != null)
-      {
+      if(movie.reviews != null){
       parentJsonArray = new JSONArray();
       parentJsonArray.addAll(Arrays.asList(movie.reviews));
       jsonArray.add(parentJsonArray);
@@ -277,7 +274,6 @@ public class MovieDB {
       Scanner sc = new Scanner (System.in);
       JSONObject obj = (JSONObject) parser.parse(new FileReader("movieData.txt"));
       JSONArray arr = (JSONArray) obj.get(Integer.toString(id));
-      arr.remove(edit - 1);
       switch (edit){
           /* 1. Movie Name
            * 2. Movie Type
@@ -285,14 +281,17 @@ public class MovieDB {
            * 4. Price
            */
           case 1:
+              arr.remove(edit - 1);
               System.out.print("\nPlease enter the new Movie Name: ");
               arr.add(0, sc.nextLine()); 
               break;
           case 2:
+              arr.remove(edit - 1);
               System.out.print("Please enter the new Movie Type: ");
               arr.add(1, sc.next()); 
               break; 
           case 3:
+              arr.remove(edit - 1);
               JSONArray childJsonArray = new JSONArray();
               System.out.print("Please enter the new Show Timings: ");
                 char choice = 'y';
@@ -303,6 +302,24 @@ public class MovieDB {
                 } while (choice == 'y'|| choice == 'Y');
                 arr.add(2,childJsonArray);
               break;
+          case 4:
+              String temp_status;
+              String name;
+              System.out.print("Please enter new showing status: ");
+              temp_status = sc.nextLine();
+              if(temp_status.equalsIgnoreCase("End of Showing")){
+                    System.out.println("Enter Movie Name to confirm: ");
+                    name = sc.nextLine();
+                    if(this.getMovieName().equals(name))
+                        this.deleteMovie(name);
+                    else
+                        System.out.println("Movie not deleted!");
+              }
+              else{
+                  arr.remove(9);
+                  arr.add(9,temp_status);
+              }
+          break;
           default:
               break;
       }
@@ -323,7 +340,6 @@ public class MovieDB {
         int id=0;
         String[] s,s1;
         double[] s2;
-        String s3;
         int i,j,k;
         boolean[][][] seats=null;
         while (obj1.get(Integer.toString(id))!=null){
@@ -366,16 +382,16 @@ public class MovieDB {
                 s2[i] = (double) arr2.get(i);
             //Director, showStatus, synopsis, cast
             
-            
             movies[id] = new MovieDB((arr.get(0)).toString(),
                     (arr.get(1)).toString(),
                     s,
                     seats,
                     (double)arr.get(4),
                     s1,
-                    s2, arr.get(7).toString(),arr.get(8).toString(), arr.get(9).toString(), arr.get(10).toString());
-            
-            
+                    s2, arr.get(7).toString(),
+                    arr.get(8).toString(), 
+                    arr.get(9).toString(), 
+                    arr.get(10).toString());
             
             id++;
         }
@@ -432,14 +448,14 @@ public class MovieDB {
             for(i=0;i<arr2.size();i++)
                 s2[i] = (double) arr2.get(i);
             
-            String s3 = arr.get(9).toString();
             movies[id1++] = new MovieDB((arr.get(0)).toString(),
                     (arr.get(1)).toString(),
                     s,
                     seats,
                     (double)arr.get(4),
                     s1,
-                    s2,arr.get(7).toString(),arr.get(8).toString(), s3, arr.get(10).toString());
+                    s2,arr.get(7).toString(),(arr.get(8)).toString(), (arr.get(9)).toString(),
+                    (arr.get(10)).toString());
             id++;
             if(id==check_id)
                 id++;

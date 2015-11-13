@@ -180,7 +180,6 @@ public class Staff extends Person{
             do{
             System.out.print("\n\t\t1. Create Movie"
                     + "\n\t\t2. Update Movie\n"
-                    + "\t\t3. Delete Movie"
                     + "\n\t\t4. Update Movie Listing"
                     + "\n[5] Logout\t\t\t\t[6] Exit\nPlease enter your choice: ");
            ch = sc.nextInt();
@@ -266,10 +265,6 @@ public class Staff extends Person{
                             + "Enter your choice: ");
                     c2 = sc.nextInt();
                     movieEditObj.updateMovie(ch-1, c2);
-                   break;
-               case 3:
-                   System.out.println("Enter Movie Name");
-                   movieEditObj.deleteMovie(sc.next());
                    break;
                case 4: movieEditObj.updateMovieListings(allMovies);
                default:

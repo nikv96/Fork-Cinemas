@@ -1,6 +1,10 @@
 package movieapp;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -18,7 +22,7 @@ public class MovieList {
     /*
     * This method lists all the the movies in a table
     */
-    public void listAllMovies(MovieDB movieList[], Customer cObj){
+    public void listAllMovies(MovieDB movieList[], Customer cObj) throws IOException, ParseException{
         int count = 0;
       /*  for(int i = 0; i < movieList.length;i++)
         {
@@ -55,7 +59,13 @@ public class MovieList {
         System.out.println("Choose your movie:");
         ch = sc.nextInt();
         
-        movieChoice.getMovieDetails(movies[ch-1], cObj);
+        try {
+            movieChoice.getMovieDetails(movies[ch-1], cObj);
+        } catch (IOException ex) {
+            Logger.getLogger(MovieList.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(MovieList.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /*
@@ -75,13 +85,19 @@ public class MovieList {
         System.out.println("Choose your movie:");
         ch = sc.nextInt();
         
-        movieChoice.getMovieDetails(movies[ch-1], cObj);
+        try {
+            movieChoice.getMovieDetails(movies[ch-1], cObj);
+        } catch (IOException ex) {
+            Logger.getLogger(MovieList.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(MovieList.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /*
     * This method lists the top 5 movies in a table
     */
-    public void listTop5(MovieDB movieList[], Customer cObj){
+    public void listTop5(MovieDB movieList[], Customer cObj) throws IOException, ParseException{
         int count = 1;int ch;
         movies = sortMovieListByReviews(movieList);
         for(MovieDB movie : movies){

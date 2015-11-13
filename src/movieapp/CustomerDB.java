@@ -17,10 +17,28 @@ import org.json.simple.parser.ParseException;
  */
 public class CustomerDB {
     
-    public void setBooking(Customer c, int id, String slot){
-        c.booked[id] = (int)(slot.charAt(0)) + 1;
+    public void setBooking(Customer c, int id, int slot) throws IOException, ParseException{
+        c.booked[id] = slot;
         System.out.println(""+c.booked[id]);
         //write back to file later
+        JSONParser parser = new JSONParser();
+        JSONObject objFull = new JSONObject();
+        File f = new File("customerData.txt");
+        if(f.exists()) { 
+            objFull = (JSONObject) parser.parse(new FileReader("customerData.txt"));
+        }
+        JSONArray arrRow;
+        arrRow =(JSONArray) objFull.get(Integer.toString(c.id));
+        JSONArray childJsonArray = new JSONArray();
+        for(int i=0;i<c.booked.length;i++){
+            childJsonArray.add(c.booked[i]);
+        }
+        arrRow.remove(8);
+        arrRow.add(childJsonArray);
+        objFull.replace((Integer.toString(c.id)), arrRow);
+        try (FileWriter file = new FileWriter("customerData.txt")){
+          file.write(objFull.toJSONString());
+      }
     }
     
     public static boolean checkUser(String user, String pwd) throws IOException, 

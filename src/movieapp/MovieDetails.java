@@ -1,11 +1,13 @@
 package movieapp;
 
 import java.io.Console;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -18,7 +20,7 @@ public class MovieDetails {
     
     CustomerDB cust = new CustomerDB();
     
-    public void getMovieDetails(MovieDB movie, Customer cObj) {
+    public void getMovieDetails(MovieDB movie, Customer cObj) throws IOException, ParseException {
         int ch = 0;
         char choice; String slot = "";
         System.out.println(movie.getMovieName());
@@ -99,7 +101,7 @@ public class MovieDetails {
         }while ( ch!=3 );
     }
     
-    public void booking(MovieDB movie, int row, int column, int id, Customer cObject)
+    public void booking(MovieDB movie, int row, int column, int id, Customer cObject) throws IOException, ParseException
     {
         String name, emailID; long phone;
         System.out.print("Please confirm the following details for identification purposes: ");
@@ -113,8 +115,8 @@ public class MovieDetails {
         sc.next();
         System.out.println("Please enter your 3 digit CVV number: ");
         sc.next();
-        movie.setSeat(id, row, column);
-        cust.setBooking(cObject, movie.getId(), movie.getShowTimings()[id]);
+        movie.setSeat(id,row,column);
+        cust.setBooking(cObject, movie.getId(),id);
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
         Date date = new Date();
         System.out.println("Payment Successful. Your Transaction ID is " + movie.getId() + dateFormat.format(date) +".\nThank You for using Fork Cinemas.");
@@ -137,7 +139,7 @@ public class MovieDetails {
         int i;
         boolean[][][] allSeats = movie.getSeats();
         boolean[][] seats = allSeats[id];
-        for (boolean[] seat : seats) {
+        for (boolean[] seat: seats) {
             System.out.print("\n");
             for (i =0;i < seat.length;i++){
                 if(seat[i]==true){
