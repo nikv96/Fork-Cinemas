@@ -36,12 +36,20 @@ public class MovieDB {
     
     private int id;
     
+    private String director;
+    
+    private String synopsis;
+    
+    private String showStatus;
+    
+    private String cast;
+    
     private MovieDB allMovies[];
     
     public MovieDB(){
     }
     
-    public MovieDB(String movieName, String movieType, String[] showTimings, String[] review, double[] rating){
+    public MovieDB(String movieName, String movieType, String[] showTimings, String[] review, double[] rating, String director, String synopsis, String showStatus, String cast){
         this.movieName = movieName;
         this.movieType = movieType;
         this.showTimings = showTimings;
@@ -53,6 +61,10 @@ public class MovieDB {
                     this.seats[i][j][k]=false;
         this.reviews = review;
         this.rating = rating;
+        this.director = director;
+        this.showStatus = showStatus;
+        this.synopsis = synopsis;
+        this.cast = cast;
     }
     public MovieDB(String movieName, String movieType, String[] showTimings,
             double price, String[] reviews, double[] rating){
@@ -70,7 +82,7 @@ public class MovieDB {
     }
     
     public MovieDB(String movieName, String movieType, String[] showTimings,
-            boolean[][][] seats, double price,String[] reviews, double[] rating){
+            boolean[][][] seats, double price,String[] reviews, double[] rating,String director, String synopsis, String showStatus, String cast){
         this.movieName = movieName;
         this.movieType = movieType;
         this.price = price;
@@ -123,20 +135,44 @@ public class MovieDB {
         return sum/rating.length;
     }
     
+    public String getDirector(){
+        return this.director;
+    }
+    
+    public String getSynopsis(){
+        return this.synopsis;
+    }
+    
+    public String getCast(){
+        return this.cast;
+    }
+    
+    public String getShowStatus(){
+        return this.showStatus;
+    }
+    
+    public void setShowStatus(String status){
+        this.showStatus = status;
+    }
+    
     public void setSeat(int row, int column, int showId){
         this.seats[row][column][showId] = true;
     }
     
     public void setReview(String review) {
-        String[] temp_reviews = new String[reviews.length+1];
-        for(int i=0;i<reviews.length;i++)
+        String[] temp_reviews = new String[this.reviews.length+1];
+        for(int i=0;i<this.reviews.length;i++)
             temp_reviews[i]= reviews[i];
-        temp_reviews[reviews.length] = review;
-        reviews = temp_reviews;
+        temp_reviews[this.reviews.length] = review;
+        this.reviews = temp_reviews;
     }
     
-    public void setRating(double rating) {
-        this.rating[this.rating.length] = rating;
+    public void setRating(double r) {
+        double[] temp_ratings = new double[this.rating.length+1];
+        for(int i=0;i<this.rating.length;i++)
+            temp_ratings[i]= rating[i];
+        temp_ratings[this.rating.length] = r;
+        this.rating = temp_ratings;
     }
     
     public static void setTotalId() throws FileNotFoundException, IOException, ParseException {
@@ -189,6 +225,15 @@ public class MovieDB {
       for(int i=0; i<rating.length; i++)
           parentJsonArray.add(rating[i]);
       jsonArray.add(parentJsonArray);
+      
+      jsonArray.add(movie.director);
+      
+      jsonArray.add(movie.synopsis);
+      
+      jsonArray.add(movie.showStatus);
+      
+      jsonArray.add(movie.cast);
+      
       obj.put(total_id++, jsonArray);
       try (FileWriter file = new FileWriter("movieData.txt")) 
       {
@@ -278,6 +323,7 @@ public class MovieDB {
         int id=0;
         String[] s,s1;
         double[] s2;
+        String s3;
         int i,j,k;
         boolean[][][] seats=null;
         while (obj1.get(Integer.toString(id))!=null){
@@ -318,6 +364,8 @@ public class MovieDB {
             s2 = new double[arr2.size()];
             for(i=0;i<arr2.size();i++)
                 s2[i] = (double) arr2.get(i);
+            //Director, showStatus, synopsis, cast
+            
             
             movies[id] = new MovieDB((arr.get(0)).toString(),
                     (arr.get(1)).toString(),
@@ -325,7 +373,10 @@ public class MovieDB {
                     seats,
                     (double)arr.get(4),
                     s1,
-                    s2);
+                    s2, arr.get(7).toString(),arr.get(8).toString(), arr.get(9).toString(), arr.get(10).toString());
+            
+            
+            
             id++;
         }
         return movies;
@@ -381,13 +432,14 @@ public class MovieDB {
             for(i=0;i<arr2.size();i++)
                 s2[i] = (double) arr2.get(i);
             
+            String s3 = arr.get(9).toString();
             movies[id1++] = new MovieDB((arr.get(0)).toString(),
                     (arr.get(1)).toString(),
                     s,
                     seats,
                     (double)arr.get(4),
                     s1,
-                    s2);
+                    s2,arr.get(7).toString(),arr.get(8).toString(), s3, arr.get(10).toString());
             id++;
             if(id==check_id)
                 id++;
@@ -430,7 +482,15 @@ public class MovieDB {
             for(int i=0; i<movie.rating.length; i++)
                 parentJsonArray.add(movie.rating[i]);
             jsonArray.add(parentJsonArray);
-            jsonArray.add(movie.getPrice());
+            
+            jsonArray.add(movie.director);
+      
+            jsonArray.add(movie.synopsis);
+      
+            jsonArray.add(movie.showStatus);
+      
+            jsonArray.add(movie.cast);
+            
             obj.put(id++, jsonArray);
         }
         try (FileWriter file = new FileWriter("movieData.txt")) {
@@ -438,18 +498,23 @@ public class MovieDB {
 	}
     }
     
-    public double calcPrice(String cineType, Customer cObj){
+    public double calcPrice(String cineType, Customer cObj, String showTime){
         double finalPrice = 0.0;
         finalPrice = this.getPrice();
         
-        if(cObj.getAge() >= 60){
+        if(cObj.getAge() >= 60)
+        {
             finalPrice = finalPrice * 0.94;
         }
         if(this.getMovieType().equals("3D")){
             finalPrice = finalPrice * 1.05;
         }
         if(cineType.equals("Platinum"))
-            return finalPrice*1.10;
+            finalPrice = finalPrice*1.10;
+        
+        if(showTime.substring(1, 4).equals("Sun") || showTime.substring(1,4).equals("Sat") )
+            finalPrice = finalPrice + 2;
+        
         return finalPrice;
     }
     

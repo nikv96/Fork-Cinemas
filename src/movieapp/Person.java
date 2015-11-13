@@ -123,12 +123,13 @@ public class Person {
     
     public void signup() {
         int flag = 0;
+        System.out.println("Staff - Signup\n");
         System.out.print("\nUsername: ");
         username = sc.next();
         System.out.print("\nPassword: ");
         password = sc.next();
         System.out.print("\nName: ");
-        name = sc.next();
+        name = sc.nextLine() + sc.nextLine();
         System.out.print("\nAge: ");
         age = sc.nextInt();
         do {
@@ -155,6 +156,8 @@ public class Person {
     */
     
     public void checkType (){
+        do
+        {
         System.out.print("\nEnter 'C' if you are a  Customer OR 'S' if you are a Staff Member: ");
         type = sc.next().charAt(0);
         if(type == 'C'){
@@ -172,12 +175,11 @@ public class Person {
                 sObj.login();
             else
                 sObj.signup();
-        } 
+        }
+        }while(true);
     }
     
-    /*
-    * Abstract class 
-    */
+    
     public void displayMenu() throws IOException{
         
     }

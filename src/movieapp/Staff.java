@@ -213,6 +213,9 @@ public class Staff extends Person{
                        System.out.print("Enter day,time (ex: Wednesday,1:00PM): ");
                        timings = Integer.toString(id)+sc.next();
                        showTimings = setNewShowTimings(showTimings, timings);
+                       
+                       System.out.print("Enter cineplex where show shall take place: ");
+                       timings = timings + " - " + sc.nextLine() + sc.nextLine();
                         
                        System.out.println("More shows?");
                        choice = sc.next().charAt(0);
@@ -225,8 +228,21 @@ public class Staff extends Person{
                    System.out.print("Enter Expert Rating(out of 5): ");
                    double[] rating = new double[1];
                    rating[0] = sc.nextDouble();
+                   String director, showStatus, synopsis, cast;
                    
-                   movieEditObj = new MovieDB(movieName,movieType,showTimings, review, rating);
+                   System.out.println("Enter name of director: ");
+                   director = sc.nextLine() + sc.nextLine();
+                   
+                   System.out.println("Enter synopsis of movie: ");
+                   synopsis = sc.nextLine() + sc.nextLine();
+                   
+                   System.out.println("Enter Show Status: ");
+                   showStatus = sc.nextLine() + sc.nextLine();
+                   
+                   System.out.println("Enter name of cast members: ");
+                   cast = sc.nextLine() + sc.nextLine();
+                   
+                   movieEditObj = new MovieDB(movieName,movieType,showTimings, review, rating, director, synopsis, showStatus, cast);
                    movieEditObj.createMovie(movieEditObj);
                    break;
                case 2:

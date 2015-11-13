@@ -35,16 +35,18 @@ public class Customer extends Person {
     }
     
     @Override
-    public void login (){
+    public void login ()
+    {
         try{
         int ch;
         boolean flag;
         do{
+            System.out.println("Customer - Login");
             super.login();
             flag = CustomerDB.checkUser(this.getUserName(), this.getPassword());
             if ( flag == false ){
                 System.out.println("Either username or password is wrong.");
-                System.out.print("\n1. Sign up 2. Login\nPlease enter your choice: ");
+                System.out.print("\n1. Sign up 2. Login\n3. Change Category\n4. Exit\nPlease enter your choice: ");
                 ch = sc.nextInt();
                 if(ch == 1)
                 {
@@ -52,6 +54,10 @@ public class Customer extends Person {
                     login();
                     flag = true;
                 }
+                else if(ch == 3)
+                    return;
+                else if(ch == 4)
+                    System.exit(0);
             
             }
         } while (flag !=true);
@@ -93,8 +99,11 @@ public class Customer extends Person {
         MovieDB menuObj = new MovieDB();
         MovieDB movies[] = new MovieDB[menuObj.getTotalId()];
         try{
+            
+            
             movies = menuObj.getMovieArray(movies);
             menu.customerMenu(movies, cObject[0]);
+            
         } catch(IOException | ParseException e)
         {
             e.getMessage();

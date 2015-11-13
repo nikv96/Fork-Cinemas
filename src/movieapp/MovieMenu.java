@@ -24,7 +24,7 @@ public class MovieMenu {
                     + "\t\t2. Search Movies by Name\n"
                     + "\t\t3. Search Movies by Type\n"
                     + "\t\t4. List Top 5 Movies\n"
-                    + "\t\t5. View Booking History\nEnter your choice: ");
+                    + "\t\t5. View Booking History\n[6] Logout\t\t\t\t[7] Exit\nEnter your choice: ");
             menuCChoice = sc.nextInt();
             switch(menuCChoice){
                 case 1: //List all
@@ -46,11 +46,10 @@ public class MovieMenu {
                     break;
                 case 6: //Back
                     break;
-                case 7: //Logout
-                    break;
-                case 8: //Exit
+                case 7: //Exit
                     exit(0);
                     break;
+                
             }
         } while (menuCChoice<6);
     }

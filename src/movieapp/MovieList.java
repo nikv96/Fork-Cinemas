@@ -19,6 +19,15 @@ public class MovieList {
     * This method lists all the the movies in a table
     */
     public void listAllMovies(MovieDB movieList[], Customer cObj){
+        int count = 0;
+      /*  for(int i = 0; i < movieList.length;i++)
+        {
+            if(!movieList[i].getShowStatus().equals("End of Showing"))
+            {
+                movies[count] = movieList[i];
+                count++;
+            }
+        }*/
         movies = movieList;
        
         int ch;
@@ -38,9 +47,9 @@ public class MovieList {
     public void listSearchByName(MovieDB movieList[], String searchName, Customer cObj){
         int count = 1;int ch;
         for (MovieDB movie : movieList) {
-            if (movie.getMovieName().toLowerCase().contains(searchName.toLowerCase())) {
+            if (movie.getMovieName().toLowerCase().contains(searchName.toLowerCase()) && !movie.getShowStatus().equals("End of Showing")) {
                 movies[count - 1] = movie; 
-                System.out.format("%16s%16s%16s%16s%16s", count++, movie.getMovieName(), movie.getMovieType(), Arrays.toString(movie.getShowTimings()), movie.getPrice());
+                System.out.format("%16s%16s%16s%16s", count++, movie.getMovieName(), movie.getMovieType(), Arrays.toString(movie.getShowTimings()));
             }
         }
         System.out.println("Choose your movie:");
@@ -58,9 +67,9 @@ public class MovieList {
         for (MovieDB movie : movieList) {
             if (movie.getMovieType().toLowerCase().contains(searchType.toLowerCase())) {
                 movies[count - 1] = movie;
-                System.out.format("%16s%16s%16s%16s%16s", count++, 
+                System.out.format("%16s%16s%16s%16s", count++, 
                         movie.getMovieName(), movie.getMovieType(), 
-                        Arrays.toString(movie.getShowTimings()), movie.getPrice());
+                        Arrays.toString(movie.getShowTimings()));
             }
         }
         System.out.println("Choose your movie:");
@@ -76,9 +85,9 @@ public class MovieList {
         int count = 1;int ch;
         movies = sortMovieListByReviews(movieList);
         for(MovieDB movie : movies){
-            System.out.format("%16s%16s%16s%16s%16s", count++, 
+            System.out.format("%16s%16s%16s%16s", count++, 
                         movie.getMovieName(), movie.getMovieType(), 
-                        Arrays.toString(movie.getShowTimings()), movie.getPrice());
+                        Arrays.toString(movie.getShowTimings()));
             if( count == 6 )
                 break;
         }
@@ -98,8 +107,12 @@ public class MovieList {
         for (int i = 0; i < movieList.length;i++) {
             if (bookHistory[i] > 0) {
                 movies[count - 1] = movieList[i];
-                System.out.format("%16s%16s%16s%16s%16s", count++, movieList[i].getMovieName(), 
-                        movieList[i].getMovieType(), Arrays.toString(movieList[i].getShowTimings()), movieList[i].getPrice());
+                for(int j = 0; j < movieList[i].getShowTimings().length;j++)
+                {
+                    if(bookHistory[i] == movieList[i].getShowTimings()[j].charAt(0))
+                System.out.format("%16s%16s%16s%16s", count++, movieList[i].getMovieName(), 
+                        movieList[i].getMovieType(), movieList[i].getShowTimings()[j].substring(1));
+                }
             }
         }
     }
