@@ -253,9 +253,9 @@ public class Staff extends Person{
                         for(i=0;i<movie.getShowTimings().length;i++)
                             s += " " + (movie.getShowTimings())[i];
                         
-                        System.out.format("\t%4d%16s%16s%56s\n", j,
-                                movie.getMovieName(), movie.getMovieType(),s);
-                        j = j+1;
+                        if(!movie.getShowStatus().equalsIgnoreCase("End of showing"))
+                            System.out.format("\t%4d%16s%16s%56s\n", j++,
+                                    movie.getMovieName(), movie.getMovieType(),s);
                     }
                     System.out.print("\nChoose your movie(Enter serial number): ");
                     ch = sc.nextInt();

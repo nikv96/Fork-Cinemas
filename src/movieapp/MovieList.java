@@ -24,21 +24,14 @@ public class MovieList {
     */
     public void listAllMovies(MovieDB movieList[], Customer cObj) throws IOException, ParseException{
         int count = 0;
-      /*  for(int i = 0; i < movieList.length;i++)
-        {
-            if(!movieList[i].getShowStatus().equals("End of Showing"))
-            {
-                movies[count] = movieList[i];
-                count++;
-            }
-        }*/
         movies = movieList;
        
         int ch;
         int id=1;
         System.out.format("%4s%16s%16s\n","#","Movie Name","Movie Type");
         for (MovieDB movie : movies) {
-            System.out.format("%4d%16s%16s \n", id++, movie.getMovieName(), movie.getMovieType());
+            if(!movie.getShowStatus().equalsIgnoreCase("End of Showing"))
+                System.out.format("%4d%16s%16s \n", id++, movie.getMovieName(), movie.getMovieType());
         }
         System.out.print("Choose your movie:");
         ch = sc.nextInt();
@@ -75,7 +68,7 @@ public class MovieList {
         
         int count = 1;int ch;
         for (MovieDB movie : movieList) {
-            if (movie.getMovieType().toLowerCase().contains(searchType.toLowerCase())) {
+            if (movie.getMovieType().toLowerCase().contains(searchType.toLowerCase()) && !movie.getShowStatus().equals("End of Showing")) {
                 movies[count - 1] = movie;
                 System.out.format("%16s%16s%16s%16s", count++, 
                         movie.getMovieName(), movie.getMovieType(), 
@@ -101,7 +94,8 @@ public class MovieList {
         int count = 1;int ch;
         movies = sortMovieListByReviews(movieList);
         for(MovieDB movie : movies){
-            System.out.format("%16s%16s%16s%16s", count++, 
+            if(!movie.getShowStatus().equals("End of Showing"))
+                System.out.format("%16s%16s%16s%16s", count++, 
                         movie.getMovieName(), movie.getMovieType(), 
                         Arrays.toString(movie.getShowTimings()));
             if( count == 6 )

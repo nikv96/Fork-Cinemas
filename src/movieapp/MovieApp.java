@@ -21,7 +21,7 @@ public class MovieApp {
         double[] rating = {4.5, 4.5, 4.5};
         MovieDB movieInit = new MovieDB("Madagascar", "3D", showTimings, reviews, rating, "Erin Darnell", "The film tells the story of four "
                 + "Central Park Zoo animals who have spent their lives in blissful captivity and are unexpectedly shipped back to Africa, "
-                + "getting shipwrecked on the island of Madagascar.", "Now Showing", "Ben Stiller, Chris Rock");
+                + "getting shipwrecked on the island of Madagascar.", "End Of Showing", "Ben Stiller, Chris Rock");
         
         
         String[] showTimings1 = {"0Tuesday,3:00pm", "1Thursday,5:30pm"};

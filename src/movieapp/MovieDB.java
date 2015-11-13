@@ -247,16 +247,12 @@ public class MovieDB {
       JSONParser parser = new JSONParser();
       JSONObject obj1 = (JSONObject) parser.parse(new FileReader("movieData.txt"));
       JSONArray jarr = new JSONArray();
-      String s = new String();
       while (obj1.get(Integer.toString(i))!=null){
           if(movieName.equals( ((JSONArray)obj1.get(Integer.toString(i))).get(0).toString() ))
           {
               jarr = (JSONArray)obj1.get(Integer.toString(i));
-              s = jarr.get(10).toString();
-              jarr.remove(10);
               jarr.remove(9);
-              jarr.add("End Of Showing");
-              jarr.add(s);
+              jarr.add(9, "End Of Showing");
               break;
           }
           i++;
@@ -308,21 +304,10 @@ public class MovieDB {
                 arr.add(2,childJsonArray);
               break;
           case 4:
-              String temp_status;
-              String name;
-              System.out.print("Please enter new showing status: ");
-              temp_status = sc.nextLine();
-              if(temp_status.equalsIgnoreCase("End of Showing")){
-                    System.out.println("Enter Movie Name to confirm: ");
-                    
-                        deleteMovie(sc.nextLine() + sc.nextLine());
-                        return;
-              }
-              else{
-                  arr.remove(9);
-                  arr.add(9,temp_status);
-              }
-          break;
+              arr.remove(9);
+              System.out.print("Please enter the new show status: ");
+              arr.add(9, sc.nextLine()+sc.nextLine()); 
+              break; 
           default:
               break;
       }
