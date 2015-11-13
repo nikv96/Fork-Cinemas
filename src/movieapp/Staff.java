@@ -264,6 +264,7 @@ public class Staff extends Person{
                             + "\t\t2. Change Movie Type\n"
                             + "\t\t3. Update Show Timings\n"
                             + "\t\t4. Configure Showing Status\n"
+                            + "\t\t4. Change price\n"
                             + "[5] Logout\t\t\t\t[6] Exit\n"
                             + "Enter your choice: ");
                     c2 = sc.nextInt();

@@ -307,7 +307,11 @@ public class MovieDB {
               arr.remove(9);
               System.out.print("Please enter the new show status: ");
               arr.add(9, sc.nextLine()+sc.nextLine()); 
-              break; 
+              break;
+          case 5:
+              arr.remove(4);
+              System.out.println("Enter new base price: ");
+              arr.add(4,sc.nextDouble());
           default:
               break;
       }
