@@ -1,10 +1,10 @@
 ### Fork Cinemas
 Movie Booking System built in Java 
 
-### Synopsis
+### Overview
 
-A CLI movie booking system built in Java using NetBeans IDE. The project uses OOP concepts to make a Movie Booking System that can be used by either the staff or the user.  
+A CLI movie booking system built in Java using NetBeans IDE. The project uses OOP concepts in a Movie Booking System to allow access to either the staff or the user.  
 
-### Motivation
+### Disclaimer
 
-The project was built for the CE/CZ2002 Object Oriented Design and Programming course at NTU.
+This project was submitted as part of the the CE/CZ2002 Object Oriented Design and Programming course at NTU and is no longer being maintained.
